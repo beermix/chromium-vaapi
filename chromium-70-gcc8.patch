@@ -29,22 +29,6 @@
    N_ = N;
    n_ = 0;
  }
---- chromium-70.0.3528.4/net/third_party/quic/core/quic_framer.cc.gcc8	2018-08-22 02:56:37.112699039 +0200
-+++ chromium-70.0.3528.4/net/third_party/quic/core/quic_framer.cc	2018-08-22 20:08:42.304813883 +0200
-@@ -1208,11 +1208,13 @@
-         if (remaining.length() >=
-             sizeof(header->possible_stateless_reset_token)) {
-           header->has_possible_stateless_reset_token = true;
-+#pragma GCC diagnostic ignored "-Wclass-memaccess"
-           memcpy(
-               &header->possible_stateless_reset_token,
-               &remaining.data()[remaining.length() -
-                                 sizeof(header->possible_stateless_reset_token)],
-               sizeof(header->possible_stateless_reset_token));
-+#pragma GCC diagnostic pop
-         }
-       }
-     }
 --- chromium-70.0.3528.4/components/viz/common/gl_helper.cc.gcc8	2018-08-21 11:49:36.000000000 +0200
 +++ chromium-70.0.3528.4/components/viz/common/gl_helper.cc	2018-08-22 20:20:05.439042583 +0200
 @@ -476,7 +476,7 @@
@@ -369,41 +353,6 @@
  }
  
  }  // namespace blink
---- chromium-70.0.3528.4/v8/src/interface-descriptors.h.gcc8	2018-08-24 20:21:09.588641771 +0200
-+++ chromium-70.0.3528.4/v8/src/interface-descriptors.h	2018-08-24 20:24:49.422023115 +0200
-@@ -328,8 +328,8 @@
-       CallInterfaceDescriptorData::kNoFlags;              \
-   static constexpr int kReturnCount = return_count;       \
-   enum ParameterIndices {                                 \
--    __dummy = -1, /* to be able to pass zero arguments */ \
--    ##__VA_ARGS__,                                        \
-+    __dummy = -1 __VA_OPT__(,) /* to be able to pass zero arguments */ \
-+    __VA_ARGS__,                                        \
-                                                           \
-     kParameterCount,                                      \
-     kContext = kParameterCount /* implicit parameter */   \
-@@ -340,8 +340,8 @@
-       CallInterfaceDescriptorData::kNoContext;                     \
-   static constexpr int kReturnCount = return_count;                \
-   enum ParameterIndices {                                          \
--    __dummy = -1, /* to be able to pass zero arguments */          \
--    ##__VA_ARGS__,                                                 \
-+    __dummy = -1 __VA_OPT__(,) /* to be able to pass zero arguments */ \
-+    __VA_ARGS__,                                                   \
-                                                                    \
-     kParameterCount                                                \
-   };
-@@ -374,8 +374,8 @@
-   enum ParameterIndices {                               \
-     kTarget,                                            \
-     kNewTarget,                                         \
--    kActualArgumentsCount,                              \
--    ##__VA_ARGS__,                                      \
-+    kActualArgumentsCount __VA_OPT__(,)                 \
-+    __VA_ARGS__,                                        \
-                                                         \
-     kParameterCount,                                    \
-     kContext = kParameterCount /* implicit parameter */ \
 --- chromium-70.0.3528.4/content/browser/media/capture/mouse_cursor_overlay_controller_aura.cc.gcc8	2018-08-21 11:49:37.000000000 +0200
 +++ chromium-70.0.3528.4/content/browser/media/capture/mouse_cursor_overlay_controller_aura.cc	2018-08-28 16:24:08.166914370 +0200
 @@ -174,7 +174,7 @@

@@ -11,18 +11,17 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.77
-pkgrel=2
+pkgrel=5
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss'
-         'ttf-font' 'systemd' 'dbus' 'pciutils' 'json-glib'
-         'desktop-file-utils' 'hicolor-icon-theme' 'libva')
+         'ttf-font' 'systemd' 'dbus' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'clang' 'lld')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -32,7 +31,7 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-vdpau-driver-chromium: support HW acceleration on Nvidia graphics cards')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
-        chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
+        include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
         chromium-harfbuzz-r0.patch
         chromium-widevine-r2.patch
         chromium-skia-harmony.patch
@@ -55,20 +54,22 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-68-gcc7.patch
         chromium-68-gcc8.patch
         chromium-69-cinnamon.patch
-        chromium-69-gcc7.patch
+        chromium-69-gcc7-my-icu.patch
         chromium-69-gcc8.patch
         chromium-70-gcc8.patch
         chromium-compiler-r4.patch
-        chromium-0002-Wall.patch)
-sha256sums=('c914f86c4c8375b719eca89ea89dbec4ae3d09df3f758d5f7c91d4914d290449'
-            '04917e3cd4307d8e31bfb0027a5dce6d086edb10ff8a716024fbb8bb0c7dccf1'
-            'cd1e87bf3618b7897c5caf7b0f4213cfa5ce917acb0613ecd2ab3f830f0cbfbb'
-            '1b370d49c43e88acfe7c0b1f9517047e927f3407bd80b4a48bba32c001f80136'
-            '02c69bb3954087db599def7f5b6d65cf8f7cf2ed81dfbdaa4bb7b51863b4df15'
-            'c4f2d1bed9034c02b8806f00c2e8165df24de467803855904bff709ceaf11af5'
-            'feca54ab09ac0fc9d0626770a6b899a6ac5a12173c7d0c1005bc3964ec83e7b3'
-            'adf301b50b5a03c98b7602c17e1f34e37260c07c88bcb7e1661122af61f50e23'
-            '7985b5b6820300beeb119b601bb9fe3d2a662daf5dc90619a0f125ea84907ce5')
+        chromium-0002-Wall.patch
+        chromium-gcc8-r588316.patch
+        chromium-gcc8-r589614.patch
+        fixes_mojo.patch
+        libcxx.patch
+        optimize.patch
+        chromium-system-icu.patch
+        vpx.patch
+        default-allocator.patch
+        define__libc_malloc.patch
+        chromium-buildname.patch
+        chromium-0013-march-westmere.patch)
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -114,6 +115,9 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
 
+  # https://crbug.com/879900
+  #patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
+
   # https://crbug.com/skia/6663#c10
   patch -Np4 -i ../chromium-skia-harmony.patch
 
@@ -123,26 +127,40 @@ prepare() {
 
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
+
   patch -Np1 -i ../chromium-70-gtk2.patch
   patch -Np1 -i ../chromium-58-glib.patch
-  #patch -Np1 -i ../chromium-59-gcc5.patch
-  #patch -Np1 -i ../chromium-61-gcc5.patch
-  #patch -Np1 -i ../chromium-62-gcc5.patch
-  #patch -Np1 -i ../chromium-62-gcc7.patch
-  #patch -Np1 -i ../chromium-64-gcc7.patch
-  #patch -Np1 -i ../chromium-65-gcc7.patch
-  #patch -Np1 -i ../chromium-66-gcc7.patch
-  #patch -Np1 -i ../chromium-67-gcc7.patch
-  #patch -Np1 -i ../chromium-68-gcc7.patch
+  patch -Np1 -i ../chromium-59-gcc5.patch
+  patch -Np1 -i ../chromium-61-gcc5.patch
+  patch -Np1 -i ../chromium-62-gcc5.patch
+  patch -Np1 -i ../chromium-62-gcc7.patch
+  patch -Np1 -i ../chromium-64-gcc7.patch
+  patch -Np1 -i ../chromium-65-gcc7.patch
+  patch -Np1 -i ../chromium-66-gcc7.patch
+  patch -Np1 -i ../chromium-67-gcc7.patch
+  patch -Np1 -i ../chromium-68-gcc7.patch
   #patch -Np1 -i ../chromium-68-gcc8.patch
   patch -Np1 -i ../chromium-69-cinnamon.patch
-  #patch -Np1 -i ../chromium-69-gcc7.patch
-  #patch -Np1 -i ../chromium-69-gcc8.patch
-  #patch -Np1 -i ../chromium-70-gcc8.patch
+  #patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
+  patch -Np1 -i ../chromium-69-gcc8.patch
+  patch -Np1 -i ../chromium-70-gcc8.patch
   patch -Np1 -i ../chromium-compiler-r4.patch
   patch -Np1 -i ../chromium-0002-Wall.patch
   patch -Np1 -i ../silencegcc.patch
+  patch -Np1 -i ../fixes_mojo.patch
+  patch -Np1 -i ../libcxx.patch
+  patch -Np1 -i ../optimize.patch
   patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../chromium-system-icu.patch
+
+  patch -Np1 -i ../vpx.patch
+  patch -Np1 -i ../default-allocator.patch
+  patch -Np1 -i ../define__libc_malloc.patch
+  patch -Np1 -i ../chromium-buildname.patch
+  patch -Np1 -i ../chromium-0013-march-westmere.patch
+
+  patch -Np1 -i ../chromium-gcc8-r588316.patch
+  #patch -Np1 -i ../chromium-gcc8-r589614.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
@@ -173,8 +191,6 @@ prepare() {
 }
 
 build() {
-  make -C chromium-launcher-$_launcher_ver
-
   cd "$srcdir/chromium-$pkgver"
 
   export CCACHE_SLOPPINESS=time_macros
@@ -188,8 +204,9 @@ build() {
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'clang_use_chrome_plugins=false'
-    'is_official_build=false' # implies is_cfi=true on x86_64
+    'is_official_build=true' # implies is_cfi=true on x86_64
     'treat_warnings_as_errors=false'
+    'is_debug=false'
     'fieldtrial_testing_like_official_build=true'
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
@@ -201,9 +218,24 @@ build() {
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
+    'enable_vulkan=false'
     'enable_hangout_services_extension=true'
     'enable_widevine=true'
     'enable_nacl=false'
+    'enable_mdns=true'
+    'enable_vr=false'
+    'enable_wayland_server=false'
+    'is_desktop_linux=true'
+    'remove_webcore_debug_symbols=true'
+    'use_allocator="none"'
+    'use_alsa=true'
+    'use_aura=true'
+    'use_dbus=true'
+    'use_gio=true'
+    'use_glib=true'
+    'use_libpci=true'
+    'enable_remoting=false'
+    'rtc_enable_protobuf=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
@@ -225,55 +257,25 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  python2 third_party/libaddressinput/chromium/tools/update-strings.py
+  #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
+  ninja -j7 -C out/Release chrome chrome_sandbox
+  #ionice -c3 nice -n20 
 }
 
 package() {
-  cd chromium-launcher-$_launcher_ver
-  make PREFIX=/usr DESTDIR="$pkgdir" install
-  install -Dm644 LICENSE \
-    "$pkgdir/usr/share/licenses/chromium/LICENSE.launcher"
-
   cd "$srcdir/chromium-$pkgver"
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
-
-  install -Dm644 chrome/installer/linux/common/desktop.template \
-    "$pkgdir/usr/share/applications/chromium.desktop"
-  install -Dm644 chrome/app/resources/manpage.1.in \
-    "$pkgdir/usr/share/man/man1/chromium.1"
-  sed -i \
-    -e "s/@@MENUNAME@@/Chromium/g" \
-    -e "s/@@PACKAGE@@/chromium/g" \
-    -e "s/@@USR_BIN_SYMLINK_NAME@@/chromium/g" \
-    "$pkgdir/usr/share/applications/chromium.desktop" \
-    "$pkgdir/usr/share/man/man1/chromium.1"
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/{*.bin,chromedriver} \
+    out/Release/*.bin \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
   #if [[ -z ${_system_libs[icu]+set} ]]; then
     cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
   #fi
-
-  for size in 22 24 48 64 128 256; do
-    install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
-      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-  done
-
-  for size in 16 32; do
-    install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
-      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-  done
-
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
 }
-
-# vim:set ts=2 sw=2 et:
