@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.30
-pkgrel=7
+pkgrel=8
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -93,7 +93,7 @@ declare -gA _system_libs=(
   #[icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  [libpng]=libpng            # https://crbug.com/752403#c10
+  #[libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   [yasm]=
@@ -138,7 +138,7 @@ prepare() {
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
 
   #patch -Np1 -i ../chromium-70-gtk2.patch
-  #patch -Np1 -i ../chromium-58-glib.patch
+  patch -Np1 -i ../chromium-58-glib.patch
   #patch -Np1 -i ../chromium-59-gcc5.patch
   #patch -Np1 -i ../chromium-61-gcc5.patch
   #patch -Np1 -i ../chromium-62-gcc5.patch
@@ -159,7 +159,7 @@ prepare() {
   #patch -Np1 -i ../silencegcc.patch
   #patch -Np1 -i ../fixes_mojo.patch
   #patch -Np1 -i ../libcxx.patch
-  #patch -Np1 -i ../optimize.patch
+  patch -Np1 -i ../optimize.patch
   patch -Np1 -i ../unrar.patch
   #patch -Np1 -i ../chromium-system-icu.patch
 
@@ -191,7 +191,7 @@ prepare() {
   #patch -Np1 -i ../use-clang-versioned.patch
   patch -Np1 -i ../fix-build-on-older-gcc.patch
   patch -Np1 -i ../stdatomic.patch
-  patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  #patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
   patch -Np1 -i ../widevine-other-locations.patch
@@ -251,7 +251,8 @@ build() {
     'use_sysroot=false'
     'use_system_freetype=true'
     'use_system_harfbuzz=true'
-    'use_system_libpng=true'
+    'use_system_libpng=false'
+    'use_system_zlib=true'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'remove_webcore_debug_symbols=true'
