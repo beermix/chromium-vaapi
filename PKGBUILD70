@@ -10,7 +10,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=71.0.3578.30
+pkgver=70.0.3538.77
 pkgrel=6
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
@@ -125,19 +125,19 @@ prepare() {
     third_party/libxml/chromium/libxml_utils.cc
 
   # https://crbug.com/879900
-  #patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
+  patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
 
   # https://crbug.com/skia/6663#c10
-  #patch -Np4 -i ../chromium-skia-harmony.patch
+  patch -Np4 -i ../chromium-skia-harmony.patch
 
   # Fixes from Gentoo
-  #patch -Np1 -i ../chromium-harfbuzz-r0.patch
-  #patch -Np1 -i ../chromium-widevine-r2.patch
+  patch -Np1 -i ../chromium-harfbuzz-r0.patch
+  patch -Np1 -i ../chromium-widevine-r2.patch
 
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
 
-  #patch -Np1 -i ../chromium-70-gtk2.patch
+  patch -Np1 -i ../chromium-70-gtk2.patch
   #patch -Np1 -i ../chromium-58-glib.patch
   #patch -Np1 -i ../chromium-59-gcc5.patch
   #patch -Np1 -i ../chromium-61-gcc5.patch
@@ -161,7 +161,7 @@ prepare() {
   #patch -Np1 -i ../libcxx.patch
   #patch -Np1 -i ../optimize.patch
   patch -Np1 -i ../unrar.patch
-  #patch -Np1 -i ../chromium-system-icu.patch
+  patch -Np1 -i ../chromium-system-icu.patch
 
   #patch -Np1 -i ../vpx.patch
   patch -Np1 -i ../chromium-buildname.patch
@@ -170,8 +170,8 @@ prepare() {
   #patch -Np1 -i ../default-allocator.patch
   #patch -Np1 -i ../define__libc_malloc.patch
 
-  #patch -Np1 -i ../chromium-gcc8-r588316.patch
-  #patch -Np1 -i ../chromium-gcc8-r589614.patch
+  patch -Np1 -i ../chromium-gcc8-r588316.patch
+  patch -Np1 -i ../chromium-gcc8-r589614.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
@@ -181,20 +181,18 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
-  #patch -Np1 -i ../cfi-vaapi-fix.patch
-  #patch -Np1 -i ../chromium-vaapi-r21.patch
+  patch -Np1 -i ../cfi-vaapi-fix.patch
+  patch -Np1 -i ../chromium-vaapi-r21.patch
   
-  patch -Np1 -i ../enable_vaapi_on_linux_2.diff
-  patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
-  patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
+  #patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
+  #patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
   patch -Np1 -i ../specify-gcc-standard.patch
   #patch -Np1 -i ../use-clang-versioned.patch
-  patch -Np1 -i ../fix-build-on-older-gcc.patch
+  #patch -Np1 -i ../fix-build-on-older-gcc.patch
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../notifications-nicer.patch
   patch -Np1 -i ../title-bar-default-system.patch
-  patch -Np1 -i ../widevine-other-locations.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -243,7 +241,7 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=3'
+    'gtk_version=2'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
