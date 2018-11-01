@@ -152,7 +152,7 @@ prepare() {
   #patch -Np1 -i ../chromium-69-cinnamon.patch
   ##patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
   #patch -Np1 -i ../chromium-69-gcc8.patch
-  patch -Np1 -i ../chromium-70-gcc8-71.patch
+  #patch -Np1 -i ../chromium-70-gcc8-71.patch
 
   #patch -Np1 -i ../chromium-compiler-r4.patch
   patch -Np1 -i ../chromium-0002-Wall.patch
@@ -244,8 +244,14 @@ build() {
     'use_pulseaudio=false'
     'use_cups=false'
     'gtk_version=3'
+    'use_system_libjpeg=true'
+    'use_libjpeg_turbo=false'
+    'enable_widevine=true'
     'use_gnome_keyring=false'
     'use_sysroot=false'
+    'use_system_freetype=true'
+    'use_system_harfbuzz=true'
+    'use_system_libpng=true'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'remove_webcore_debug_symbols=true'
@@ -263,7 +269,7 @@ build() {
     'use_vaapi=true'
   )
 
-  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true'     'rtc_enable_protobuf=false'     
+  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true'     'rtc_enable_protobuf=false'm'is_component_build=false'
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
