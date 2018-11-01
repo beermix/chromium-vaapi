@@ -192,7 +192,7 @@ prepare() {
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../notifications-nicer.patch
-  patch -Np1 -i ../title-bar-default-system.patch
+  #patch -Np1 -i ../title-bar-default-system.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the

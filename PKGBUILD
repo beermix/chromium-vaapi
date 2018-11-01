@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.30
-pkgrel=6
+pkgrel=7
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -193,7 +193,7 @@ prepare() {
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../notifications-nicer.patch
-  patch -Np1 -i ../title-bar-default-system.patch
+  #patch -Np1 -i ../title-bar-default-system.patch
   patch -Np1 -i ../widevine-other-locations.patch
 
   # Remove bundled libraries for which we will use the system copies; this
