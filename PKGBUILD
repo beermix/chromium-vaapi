@@ -58,7 +58,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-69-cinnamon.patch
         chromium-69-gcc7-my-icu.patch
         chromium-69-gcc8.patch
-        chromium-70-gcc8.patch
+        chromium-70-gcc8-71.patch
         chromium-compiler-r4.patch
         chromium-0002-Wall.patch
         chromium-gcc8-r588316.patch
@@ -131,7 +131,7 @@ prepare() {
   #patch -Np4 -i ../chromium-skia-harmony.patch
 
   # Fixes from Gentoo
-  #patch -Np1 -i ../chromium-harfbuzz-r0.patch
+  patch -Np1 -i ../chromium-harfbuzz-r0.patch
   #patch -Np1 -i ../chromium-widevine-r2.patch
 
   patch -Np1 -i ../chromium-0002-allow-root.patch
@@ -152,7 +152,7 @@ prepare() {
   #patch -Np1 -i ../chromium-69-cinnamon.patch
   ##patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
   #patch -Np1 -i ../chromium-69-gcc8.patch
-  #patch -Np1 -i ../chromium-70-gcc8.patch
+  patch -Np1 -i ../chromium-70-gcc8-71.patch
 
   #patch -Np1 -i ../chromium-compiler-r4.patch
   patch -Np1 -i ../chromium-0002-Wall.patch
