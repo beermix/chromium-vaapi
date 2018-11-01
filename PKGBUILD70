@@ -62,6 +62,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-compiler-r4.patch
         chromium-0002-Wall.patch
         chromium-gcc8-r588316.patch
+        chromium-gcc8-r588547.patch
         chromium-gcc8-r589614.patch
         fixes_mojo.patch
         libcxx.patch
@@ -171,7 +172,8 @@ prepare() {
 
   patch -Np1 -i ../chromium-gcc8-r588316.patch
   patch -Np1 -i ../chromium-gcc8-r589614.patch
-
+  #patch -Np1 -i ../chromium-gcc8-r588547.patch
+  
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
