@@ -269,7 +269,7 @@ build() {
     'use_vaapi=true'
   )
 
-  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true'     'rtc_enable_protobuf=false'm'is_component_build=false'
+  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true' 'rtc_enable_protobuf=false'm'is_component_build=false'
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'

@@ -245,8 +245,6 @@ build() {
     'use_system_libjpeg=true'
     'use_libjpeg_turbo=false'
     'enable_widevine=true'
-    'pdf_enable_xfa=true'
-    'is_component_build=false'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'use_system_freetype=true'
