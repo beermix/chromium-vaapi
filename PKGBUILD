@@ -61,8 +61,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-70-gcc8-71.patch
         chromium-compiler-r4.patch
         chromium-0002-Wall.patch
-        chromium-gcc8-r588547.patch
-        chromium-gcc8-r589614.patch
         fixes_mojo.patch
         libcxx.patch
         optimize.patch
@@ -137,7 +135,7 @@ prepare() {
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
 
   #patch -Np1 -i ../chromium-70-gtk2.patch
-  patch -Np1 -i ../chromium-58-glib.patch
+  #patch -Np1 -i ../chromium-58-glib.patch
   #patch -Np1 -i ../chromium-59-gcc5.patch
   #patch -Np1 -i ../chromium-61-gcc5.patch
   #patch -Np1 -i ../chromium-62-gcc5.patch
@@ -148,7 +146,7 @@ prepare() {
   #patch -Np1 -i ../chromium-67-gcc7.patch
   #patch -Np1 -i ../chromium-68-gcc7.patch
   ##patch -Np1 -i ../chromium-68-gcc8.patch
-  #patch -Np1 -i ../chromium-69-cinnamon.patch
+  patch -Np1 -i ../chromium-69-cinnamon.patch
   ##patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
   #patch -Np1 -i ../chromium-69-gcc8.patch
   #patch -Np1 -i ../chromium-70-gcc8-71.patch
@@ -169,9 +167,6 @@ prepare() {
   #patch -Np1 -i ../default-allocator.patch
   #patch -Np1 -i ../define__libc_malloc.patch
 
-  patch -Np1 -i ../chromium-gcc8-r589614.patch
-  patch -Np1 -i ../chromium-gcc8-r588547.patch
-  
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
@@ -182,7 +177,7 @@ prepare() {
   msg2 'Applying VA-API patches'
   #patch -Np1 -i ../cfi-vaapi-fix.patch
   #patch -Np1 -i ../chromium-vaapi-r21.patch
-  
+
   patch -Np1 -i ../enable_vaapi_on_linux_2.diff
   patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
   patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
