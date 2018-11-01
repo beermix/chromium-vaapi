@@ -10,18 +10,19 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=70.0.3538.77
-pkgrel=5
+pkgver=71.0.3578.30
+pkgrel=6
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss'
+depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libgcrypt'
          'ttf-font' 'systemd' 'dbus' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'clang' 'lld')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git'
+             'clang' 'lld')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -34,6 +35,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
         chromium-harfbuzz-r0.patch
         chromium-widevine-r2.patch
+        chromium-system-icu.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
         chromium-0002-allow-root.patch
@@ -69,7 +71,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         default-allocator.patch
         define__libc_malloc.patch
         chromium-buildname.patch
-        chromium-0013-march-westmere.patch)
+        chromium-0013-march-westmere.patch
+        enable_vaapi_on_linux_2.diff
+        revert-Xclang-instcombine-lower-dbg-declare.patch
+        suppress-newer-clang-warning-flags.patch
+        specify-gcc-standard.patch
+        use-clang-versioned.patch
+        fix-build-on-older-gcc.patch
+        stdatomic.patch
+        remove-linux-kernel-dependency.patch
+        notifications-nicer.patch
+        title-bar-default-system.patch
+        widevine-other-locations.patch)
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -80,7 +93,7 @@ declare -gA _system_libs=(
   #[icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  #[libpng]=libpng            # https://crbug.com/752403#c10
+  [libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   [yasm]=
@@ -94,13 +107,9 @@ depends+=(${_system_libs[@]})
 # Google API keys (see https://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Arch Linux use ONLY. For your own distribution, please
 # get your own set of keys.
- _google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
- _google_default_client_id=413772536636.apps.googleusercontent.com
- _google_default_client_secret=0ZChLK6AxeA3Isu96MkwqDR4
-
-#_google_api_key=AIzaSyAQ6L9vt9cnN4nM0weaa6Y38K4eyPvtKgI
-#_google_default_client_id=740889307901-4bkm4e0udppnp1lradko85qsbnmkfq3b.apps.googleusercontent.com
-#_google_default_client_secret=9TJlhL661hvShQub4cWhANXa
+_google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
+_google_default_client_id=413772536636.apps.googleusercontent.com
+_google_default_client_secret=0ZChLK6AxeA3Isu96MkwqDR4
 
 prepare() {
   cd "$srcdir/chromium-$pkgver"
@@ -119,47 +128,49 @@ prepare() {
   #patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
 
   # https://crbug.com/skia/6663#c10
-  patch -Np4 -i ../chromium-skia-harmony.patch
+  #patch -Np4 -i ../chromium-skia-harmony.patch
 
   # Fixes from Gentoo
-  patch -Np1 -i ../chromium-harfbuzz-r0.patch
-  patch -Np1 -i ../chromium-widevine-r2.patch
+  #patch -Np1 -i ../chromium-harfbuzz-r0.patch
+  #patch -Np1 -i ../chromium-widevine-r2.patch
 
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
 
-  patch -Np1 -i ../chromium-70-gtk2.patch
-  patch -Np1 -i ../chromium-58-glib.patch
-  patch -Np1 -i ../chromium-59-gcc5.patch
-  patch -Np1 -i ../chromium-61-gcc5.patch
-  patch -Np1 -i ../chromium-62-gcc5.patch
-  patch -Np1 -i ../chromium-62-gcc7.patch
-  patch -Np1 -i ../chromium-64-gcc7.patch
-  patch -Np1 -i ../chromium-65-gcc7.patch
-  patch -Np1 -i ../chromium-66-gcc7.patch
-  patch -Np1 -i ../chromium-67-gcc7.patch
-  patch -Np1 -i ../chromium-68-gcc7.patch
-  #patch -Np1 -i ../chromium-68-gcc8.patch
-  patch -Np1 -i ../chromium-69-cinnamon.patch
-  #patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
-  patch -Np1 -i ../chromium-69-gcc8.patch
-  patch -Np1 -i ../chromium-70-gcc8.patch
-  patch -Np1 -i ../chromium-compiler-r4.patch
-  patch -Np1 -i ../chromium-0002-Wall.patch
-  patch -Np1 -i ../silencegcc.patch
-  patch -Np1 -i ../fixes_mojo.patch
-  patch -Np1 -i ../libcxx.patch
-  patch -Np1 -i ../optimize.patch
-  patch -Np1 -i ../unrar.patch
-  patch -Np1 -i ../chromium-system-icu.patch
+  #patch -Np1 -i ../chromium-70-gtk2.patch
+  #patch -Np1 -i ../chromium-58-glib.patch
+  #patch -Np1 -i ../chromium-59-gcc5.patch
+  #patch -Np1 -i ../chromium-61-gcc5.patch
+  #patch -Np1 -i ../chromium-62-gcc5.patch
+  #patch -Np1 -i ../chromium-62-gcc7.patch
+  #patch -Np1 -i ../chromium-64-gcc7.patch
+  #patch -Np1 -i ../chromium-65-gcc7.patch
+  #patch -Np1 -i ../chromium-66-gcc7.patch
+  #patch -Np1 -i ../chromium-67-gcc7.patch
+  #patch -Np1 -i ../chromium-68-gcc7.patch
+  ##patch -Np1 -i ../chromium-68-gcc8.patch
+  #patch -Np1 -i ../chromium-69-cinnamon.patch
+  ##patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
+  #patch -Np1 -i ../chromium-69-gcc8.patch
+  #patch -Np1 -i ../chromium-70-gcc8.patch
 
-  patch -Np1 -i ../vpx.patch
-  patch -Np1 -i ../default-allocator.patch
-  patch -Np1 -i ../define__libc_malloc.patch
+  #patch -Np1 -i ../chromium-compiler-r4.patch
+  patch -Np1 -i ../chromium-0002-Wall.patch
+  #patch -Np1 -i ../silencegcc.patch
+  #patch -Np1 -i ../fixes_mojo.patch
+  #patch -Np1 -i ../libcxx.patch
+  #patch -Np1 -i ../optimize.patch
+  patch -Np1 -i ../unrar.patch
+  #patch -Np1 -i ../chromium-system-icu.patch
+
+  #patch -Np1 -i ../vpx.patch
   patch -Np1 -i ../chromium-buildname.patch
   patch -Np1 -i ../chromium-0013-march-westmere.patch
 
-  patch -Np1 -i ../chromium-gcc8-r588316.patch
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
+
+  #patch -Np1 -i ../chromium-gcc8-r588316.patch
   #patch -Np1 -i ../chromium-gcc8-r589614.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
@@ -170,8 +181,20 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
-  patch -Np1 -i ../cfi-vaapi-fix.patch
-  patch -Np1 -i ../chromium-vaapi-r21.patch
+  #patch -Np1 -i ../cfi-vaapi-fix.patch
+  #patch -Np1 -i ../chromium-vaapi-r21.patch
+  
+  patch -Np1 -i ../enable_vaapi_on_linux_2.diff
+  patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
+  patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
+  patch -Np1 -i ../specify-gcc-standard.patch
+  patch -Np1 -i ../use-clang-versioned.patch
+  patch -Np1 -i ../fix-build-on-older-gcc.patch
+  patch -Np1 -i ../stdatomic.patch
+  patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  patch -Np1 -i ../notifications-nicer.patch
+  patch -Np1 -i ../title-bar-default-system.patch
+  patch -Np1 -i ../widevine-other-locations.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -195,6 +218,13 @@ build() {
 
   export CCACHE_SLOPPINESS=time_macros
 
+  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+  CFLAGS=${CFLAGS/-pipe/}
+  CXXFLAGS=${CXXFLAGS/-pipe/}
+  LDFLAGS=${LDFLAGS/-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now/}
+
   export CC='ccache clang'
   export CXX='ccache clang++'
   export AR=ar
@@ -213,29 +243,20 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=2'
+    'gtk_version=3'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
+    'enable_widevine=true'
+    'remove_webcore_debug_symbols=true'
     'enable_vulkan=false'
     'enable_hangout_services_extension=true'
-    'enable_widevine=true'
     'enable_nacl=false'
-    'enable_mdns=true'
     'enable_vr=false'
     'enable_wayland_server=false'
     'is_desktop_linux=true'
-    'remove_webcore_debug_symbols=true'
-    'use_allocator="none"'
-    'use_alsa=true'
-    'use_aura=true'
-    'use_dbus=true'
-    'use_gio=true'
-    'use_glib=true'
-    'use_libpci=true'
     'enable_remoting=false'
-    'rtc_enable_protobuf=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
@@ -243,6 +264,7 @@ build() {
     'use_vaapi=true'
   )
 
+  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true'     'rtc_enable_protobuf=false'     
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
@@ -259,7 +281,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  ninja -j7 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
   #ionice -c3 nice -n20 
 }
 
