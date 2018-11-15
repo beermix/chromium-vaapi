@@ -198,7 +198,7 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=3'
+    'gtk_version=2'
     'use_system_libjpeg=true'
     'use_libjpeg_turbo=false'
     'enable_widevine=true'
