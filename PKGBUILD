@@ -17,8 +17,7 @@ pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libgcrypt'
-         'ttf-font' 'systemd' 'dbus' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme' 'libva')
+depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libgcrypt' 'ttf-font' 'systemd' 'dbus' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 provides=('chromium')
 conflicts=('chromium')
 makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git'
@@ -242,7 +241,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
   #ionice -c3 nice -n20 
 }
 
@@ -251,16 +250,15 @@ package() {
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
+  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/*.bin \
+    out/Release/{*.bin,chromedriver} \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
-  #if [[ -z ${_system_libs[icu]+set} ]]; then
-    cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
-  #fi
+  cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
 }
 
 # vim:set ts=2 sw=2 et:
