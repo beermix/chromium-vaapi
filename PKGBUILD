@@ -10,8 +10,8 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=71.0.3578.30
-pkgrel=8
+pkgver=70.0.3538.102
+pkgrel=1
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -122,50 +122,17 @@ prepare() {
     third_party/libxml/chromium/libxml_utils.cc
 
   # https://crbug.com/879900
-  #patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
+  patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
 
   # https://crbug.com/skia/6663#c10
-  #patch -Np4 -i ../chromium-skia-harmony.patch
+  patch -Np4 -i ../chromium-skia-harmony.patch
 
   # Fixes from Gentoo
   patch -Np1 -i ../chromium-harfbuzz-r0.patch
-  #patch -Np1 -i ../chromium-widevine-r2.patch
+  patch -Np1 -i ../chromium-widevine-r2.patch
 
-  patch -Np1 -i ../chromium-0002-allow-root.patch
-  patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
-
-  #patch -Np1 -i ../chromium-70-gtk2.patch
-  #patch -Np1 -i ../chromium-58-glib.patch
-  #patch -Np1 -i ../chromium-59-gcc5.patch
-  #patch -Np1 -i ../chromium-61-gcc5.patch
-  #patch -Np1 -i ../chromium-62-gcc5.patch
-  #patch -Np1 -i ../chromium-62-gcc7.patch
-  #patch -Np1 -i ../chromium-64-gcc7.patch
-  #patch -Np1 -i ../chromium-65-gcc7.patch
-  #patch -Np1 -i ../chromium-66-gcc7.patch
-  #patch -Np1 -i ../chromium-67-gcc7.patch
-  #patch -Np1 -i ../chromium-68-gcc7.patch
-  ##patch -Np1 -i ../chromium-68-gcc8.patch
-  patch -Np1 -i ../chromium-69-cinnamon.patch
-  ##patch -Np1 -i ../chromium-69-gcc7-my-icu.patch
-  #patch -Np1 -i ../chromium-69-gcc8.patch
-  #patch -Np1 -i ../chromium-70-gcc8-71.patch
-
-  #patch -Np1 -i ../chromium-compiler-r4.patch
-  patch -Np1 -i ../chromium-0002-Wall.patch
-  #patch -Np1 -i ../silencegcc.patch
-  #patch -Np1 -i ../fixes_mojo.patch
-  #patch -Np1 -i ../libcxx.patch
-  patch -Np1 -i ../optimize.patch
-  patch -Np1 -i ../unrar.patch
-  #patch -Np1 -i ../chromium-system-icu.patch
-
-  #patch -Np1 -i ../vpx.patch
-  patch -Np1 -i ../chromium-buildname.patch
-  patch -Np1 -i ../chromium-0013-march-westmere.patch
-
-  #patch -Np1 -i ../default-allocator.patch
-  #patch -Np1 -i ../define__libc_malloc.patch
+  # https://bugs.gentoo.org/661880#c21
+  patch -Np1 -i ../chromium-system-icu.patch
 
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
@@ -175,19 +142,14 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
-  #patch -Np1 -i ../cfi-vaapi-fix.patch
-  #patch -Np1 -i ../chromium-vaapi-r21.patch
+  patch -Np1 -i ../cfi-vaapi-fix.patch
+  patch -Np1 -i ../chromium-vaapi-r21.patch
 
-  patch -Np1 -i ../enable_vaapi_on_linux_2.diff
-  patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
-  patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
-  patch -Np1 -i ../specify-gcc-standard.patch
-  patch -Np1 -i ../fix-build-on-older-gcc.patch
-  patch -Np1 -i ../stdatomic.patch
-  #patch -Np1 -i ../remove-linux-kernel-dependency.patch
-  patch -Np1 -i ../notifications-nicer.patch
-  #patch -Np1 -i ../title-bar-default-system.patch
-  patch -Np1 -i ../widevine-other-locations.patch
+  patch -Np1 -i ../chromium-buildname.patch
+  patch -Np1 -i ../chromium-0013-march-westmere.patch
+  patch -Np1 -i ../chromium-0002-allow-root.patch
+  patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
+  patch -Np1 -i ../chromium-70-gtk2.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -300,3 +262,5 @@ package() {
     cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
   #fi
 }
+
+# vim:set ts=2 sw=2 et:
