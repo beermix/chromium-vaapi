@@ -70,8 +70,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
 declare -gA _system_libs=(
-  #[ffmpeg]=ffmpeg
-  #[flac]=flac
   [fontconfig]=fontconfig
   [freetype]=freetype2
   [harfbuzz-ng]=harfbuzz
@@ -79,13 +77,8 @@ declare -gA _system_libs=(
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng            # https://crbug.com/752403#c10
-  #[libvpx]=libvpx            # needs unreleased libvpx
-  #[libwebp]=libwebp
   [libxml]=libxml2
-  [libxslt]=libxslt
- #[opus]=opus
- #[re2]=re2
- #[snappy]=snappy
+  #[libxslt]=libxslt
   [yasm]=
   #[zlib]=minizip
 )
@@ -140,8 +133,8 @@ prepare() {
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
-  patch -Np1 -i ../chromium-0013-march-westmere.patch
-  patch -Np1 -i ../chromium-0002-allow-root.patch
+  #patch -Np1 -i ../chromium-0013-march-westmere.patch
+  #patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../chromium-70-gtk2.patch
 
@@ -154,8 +147,8 @@ prepare() {
   patch -Np1 -i ../title-bar-default-system.patch
 
   patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
-  patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
   patch -Np1 -i ../chromium-58-glib.patch
+  patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
@@ -219,7 +212,6 @@ build() {
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
     'use_vaapi=true'
-    'is_debug=false'
   )
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn) |  'remove_webcore_debug_symbols=true'  'is_debug=false'
