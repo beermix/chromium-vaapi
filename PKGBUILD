@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=9
+pkgrel=10
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -77,8 +77,8 @@ declare -gA _system_libs=(
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng            # https://crbug.com/752403#c10
-  [libxml]=libxml2
-  [libxslt]=libxslt
+  #[libxml]=libxml2
+  #[libxslt]=libxslt
   [yasm]=
   #[zlib]=minizip
 )
@@ -233,7 +233,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  noti ninja -j8 -C out/Release chrome chrome_sandbox
+  noti ninja -j7 -C out/Release chrome chrome_sandbox
 }
 
 package() {
