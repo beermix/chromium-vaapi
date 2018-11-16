@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=7
+pkgrel=8
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -77,7 +77,7 @@ declare -gA _system_libs=(
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng            # https://crbug.com/752403#c10
-  [libxml]=libxml2
+  #[libxml]=libxml2
   #[libxslt]=libxslt
   [yasm]=
   #[zlib]=minizip
