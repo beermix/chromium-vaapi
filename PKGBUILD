@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=8
+pkgrel=9
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
