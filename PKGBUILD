@@ -11,8 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=3
-_launcher_ver=6
+pkgrel=5
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -148,6 +147,13 @@ prepare() {
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../chromium-70-gtk2.patch
+  
+  patch -Np1 -i ../fixes_mojo.patch
+  patch -Np1 -i ../notifications-nicer.patch
+  patch -Np1 -i ../optimize.patch
+  patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  patch -Np1 -i ../stdatomic.patch
+  patch -Np1 -i ../unrar.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -236,7 +242,6 @@ package() {
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
 
   install -Dm644 chrome/installer/linux/common/desktop.template \
     "$pkgdir/usr/share/applications/chromium.desktop"
