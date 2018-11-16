@@ -241,7 +241,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
   #ionice -c3 nice -n20 
 }
 
@@ -250,11 +250,11 @@ package() {
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
+  #ln -s /usr/lib/chromium/ "$pkgdir/usr/bin/chromedriver"
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/{*.bin,chromedriver} \
+    out/Release/*.bin \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
