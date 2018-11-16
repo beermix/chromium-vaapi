@@ -206,15 +206,21 @@ build() {
     'use_custom_libcxx=false'
     'enable_hangout_services_extension=true'
     'enable_widevine=true'
+    'enable_nacl_nonsfi=false'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
     'use_vaapi=true'
+    'remove_webcore_debug_symbols=true'
+    'use_gold=false'
+    'use_kerberos=false'
+    'is_debug=false'
+    'enable_nacl=false'
   )
 
-  # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn) |  'remove_webcore_debug_symbols=true'  'is_debug=false'
+  # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
   CPPFLAGS+=' -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__='
