@@ -146,12 +146,12 @@ prepare() {
   patch -Np1 -i ../unrar.patch
   patch -Np1 -i ../title-bar-default-system.patch
 
-  patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
+  #patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
   patch -Np1 -i ../chromium-58-glib.patch
   patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
-  patch -Np1 -i ../default-allocator.patch
-  patch -Np1 -i ../define__libc_malloc.patch
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
