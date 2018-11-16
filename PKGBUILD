@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=2
+pkgrel=3
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -171,12 +171,12 @@ build() {
 
   export CCACHE_SLOPPINESS=time_macros
 
-  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
-  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
-  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
-  CFLAGS=${CFLAGS/-pipe/}
-  CXXFLAGS=${CXXFLAGS/-pipe/}
-  LDFLAGS=${LDFLAGS/-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now/}
+#  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+#  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+#  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+#  CFLAGS=${CFLAGS/-pipe/}
+#  CXXFLAGS=${CXXFLAGS/-pipe/}
+#  LDFLAGS=${LDFLAGS/-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now/}
 
   export CC='ccache clang'
   export CXX='ccache clang++'
@@ -203,6 +203,7 @@ build() {
     'use_custom_libcxx=false'
     'remove_webcore_debug_symbols=true'
     'enable_hangout_services_extension=true'
+    'enable_widevine=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
@@ -227,8 +228,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
-  #ionice -c3 nice -n20 
+  noti ninja -j8 -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {
@@ -236,16 +236,40 @@ package() {
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  ln -s /usr/lib/chromium/ "$pkgdir/usr/bin/chromedriver"
+  ln -s /usr/lib/chromium/chromedriver "$pkgdir/usr/bin/chromedriver"
+
+  install -Dm644 chrome/installer/linux/common/desktop.template \
+    "$pkgdir/usr/share/applications/chromium.desktop"
+  install -Dm644 chrome/app/resources/manpage.1.in \
+    "$pkgdir/usr/share/man/man1/chromium.1"
+  sed -i \
+    -e "s/@@MENUNAME@@/Chromium/g" \
+    -e "s/@@PACKAGE@@/chromium/g" \
+    -e "s/@@USR_BIN_SYMLINK_NAME@@/chromium/g" \
+    "$pkgdir/usr/share/applications/chromium.desktop" \
+    "$pkgdir/usr/share/man/man1/chromium.1"
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/*.bin \
-    out/Release/chromedriver \
+    out/Release/{*.bin,chromedriver} \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
-  cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
+  if [[ -z ${_system_libs[icu]+set} ]]; then
+    cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
+  fi
+
+  for size in 22 24 48 64 128 256; do
+    install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+
+  for size in 16 32; do
+    install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
 }
 
 # vim:set ts=2 sw=2 et:
