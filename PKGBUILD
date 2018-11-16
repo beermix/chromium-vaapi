@@ -138,17 +138,20 @@ prepare() {
   patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
-#  patch -Np1 -i ../chromium-buildname.patch
-  patch -Np1 -i ../chromium-0013-march-westmere.patch
+  msg2 'Applying OE patches'
+  #patch -Np1 -i ../chromium-0013-march-westmere.patch
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../chromium-70-gtk2.patch
-  
+
+  msg2 'Applying Other patches'
   patch -Np1 -i ../fixes_mojo.patch
   patch -Np1 -i ../notifications-nicer.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../title-bar-default-system.patch
+  patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
