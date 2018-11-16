@@ -217,7 +217,6 @@ build() {
     'use_gold=false'
     'use_kerberos=false'
     'is_debug=false'
-    'enable_nacl=false'
   )
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
