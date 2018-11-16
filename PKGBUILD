@@ -150,7 +150,7 @@ prepare() {
   
   patch -Np1 -i ../fixes_mojo.patch
   patch -Np1 -i ../notifications-nicer.patch
-  patch -Np1 -i ../optimize.patch
+  #patch -Np1 -i ../optimize.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../unrar.patch
@@ -243,17 +243,6 @@ package() {
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
 
-  install -Dm644 chrome/installer/linux/common/desktop.template \
-    "$pkgdir/usr/share/applications/chromium.desktop"
-  install -Dm644 chrome/app/resources/manpage.1.in \
-    "$pkgdir/usr/share/man/man1/chromium.1"
-  sed -i \
-    -e "s/@@MENUNAME@@/Chromium/g" \
-    -e "s/@@PACKAGE@@/chromium/g" \
-    -e "s/@@USR_BIN_SYMLINK_NAME@@/chromium/g" \
-    "$pkgdir/usr/share/applications/chromium.desktop" \
-    "$pkgdir/usr/share/man/man1/chromium.1"
-
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
     out/Release/{*.bin,chromedriver} \
@@ -263,18 +252,8 @@ package() {
   if [[ -z ${_system_libs[icu]+set} ]]; then
     cp out/Release/icudtl.dat "$pkgdir/usr/lib/chromium/"
   fi
-
-  for size in 22 24 48 64 128 256; do
-    install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
-      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-  done
-
-  for size in 16 32; do
-    install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
-      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
-  done
-
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
+  
+  mv $pkgdir/usr/lib/chromium/chromium $pkgdir/usr/lib/chromium/chrome
 }
 
 # vim:set ts=2 sw=2 et:
