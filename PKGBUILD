@@ -20,8 +20,7 @@ license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libgcrypt' 'ttf-font' 'systemd' 'dbus' 'pciutils' 'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git'
-             'clang' 'lld')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
