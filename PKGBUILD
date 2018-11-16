@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=6
+pkgrel=7
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -133,8 +133,8 @@ prepare() {
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
-  #patch -Np1 -i ../chromium-0013-march-westmere.patch
-  #patch -Np1 -i ../chromium-0002-allow-root.patch
+  patch -Np1 -i ../chromium-0013-march-westmere.patch
+  patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../chromium-70-gtk2.patch
 
@@ -199,7 +199,7 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=2'
+    'gtk_version=3'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
@@ -228,9 +228,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  python2 third_party/libaddressinput/chromium/tools/update-strings.py
-
-  noti ninja -j8 -C out/Release chrome chrome_sandbox chromedriver
+  noti ninja -j8 -C out/Release chrome chrome_sandbox
 }
 
 package() {
@@ -241,7 +239,6 @@ package() {
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/{*.bin,chromedriver} \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
