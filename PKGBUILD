@@ -144,11 +144,11 @@ prepare() {
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
   patch -Np1 -i ../stdatomic.patch
   patch -Np1 -i ../unrar.patch
-  #patch -Np1 -i ../title-bar-default-system.patch
+  patch -Np1 -i ../title-bar-default-system.patch
 
   #patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
-  #patch -Np1 -i ../chromium-58-glib.patch
-  #patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
+  patch -Np1 -i ../chromium-58-glib.patch
+  patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
   #patch -Np1 -i ../default-allocator.patch
   #patch -Np1 -i ../define__libc_malloc.patch
@@ -244,6 +244,7 @@ package() {
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
+    out/Release/*.bin \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
