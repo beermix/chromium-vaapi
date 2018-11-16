@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=1
+pkgrel=2
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -88,7 +88,7 @@ declare -gA _system_libs=(
   #[icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  #[libpng]=libpng            # https://crbug.com/752403#c10
+  [libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   [yasm]=
@@ -197,25 +197,13 @@ build() {
     'use_pulseaudio=false'
     'use_cups=false'
     'gtk_version=2'
-    'use_system_libjpeg=true'
-    'use_libjpeg_turbo=false'
-    'enable_widevine=true'
     'use_gnome_keyring=false'
     'use_sysroot=false'
-    'use_system_freetype=true'
-    'use_system_harfbuzz=true'
-    'use_system_libpng=false'
-    'use_system_zlib=true'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'remove_webcore_debug_symbols=true'
-    'enable_vulkan=false'
     'enable_hangout_services_extension=true'
     'enable_nacl=false'
-    'enable_vr=false'
-    'enable_wayland_server=false'
-    'is_desktop_linux=true'
-    'enable_remoting=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
@@ -223,7 +211,6 @@ build() {
     'use_vaapi=true'
   )
 
-  # 'use_allocator="none"' 'enable_mdns=true' 'enable_widevine=true' 'rtc_enable_protobuf=false'm'is_component_build=false'
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
@@ -240,7 +227,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  noti ninja -j7 -C out/Release chrome chrome_sandbox
+  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
   #ionice -c3 nice -n20 
 }
 
@@ -249,11 +236,12 @@ package() {
 
   install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
   install -Dm4755 out/Release/chrome_sandbox "$pkgdir/usr/lib/chromium/chrome-sandbox"
-  #ln -s /usr/lib/chromium/ "$pkgdir/usr/bin/chromedriver"
+  ln -s /usr/lib/chromium/ "$pkgdir/usr/bin/chromedriver"
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
     out/Release/*.bin \
+    out/Release/chromedriver \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
