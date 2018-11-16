@@ -241,7 +241,7 @@ build() {
 
   #python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
-  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
+  noti ninja -j7 -C out/Release chrome chrome_sandbox
   #ionice -c3 nice -n20 
 }
 
