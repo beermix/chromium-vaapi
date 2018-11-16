@@ -9,3 +9,4 @@ build/
 chromium-freetype2/
 chromium-*.txt
 chromium
+usr/

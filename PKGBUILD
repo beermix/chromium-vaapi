@@ -173,8 +173,8 @@ prepare() {
 build() {
   cd "$srcdir/chromium-$pkgver"
 
-  #export CCACHE_SLOPPINESS=time_macros
-  export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime
+  export CCACHE_SLOPPINESS=time_macros
+  #export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime
 
   #CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
   #CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
