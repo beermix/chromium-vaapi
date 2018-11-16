@@ -77,8 +77,8 @@ declare -gA _system_libs=(
   [libdrm]=
   [libjpeg]=libjpeg
   [libpng]=libpng            # https://crbug.com/752403#c10
-  #[libxml]=libxml2
-  #[libxslt]=libxslt
+  [libxml]=libxml2
+  [libxslt]=libxslt
   [yasm]=
   #[zlib]=minizip
 )
