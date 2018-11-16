@@ -175,12 +175,15 @@ build() {
 
   export CCACHE_SLOPPINESS=time_macros
 
-  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
-  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
-  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
-  CFLAGS=${CFLAGS/-pipe/}
-  CXXFLAGS=${CXXFLAGS/-pipe/}
-  LDFLAGS=${LDFLAGS/-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now/}
+  #CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+  #CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector -fno-plt/}
+
+  #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
+  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
+  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
+  #CFLAGS=${CFLAGS/-pipe/}
+  #CXXFLAGS=${CXXFLAGS/-pipe/}
+  #LDFLAGS=${LDFLAGS/-Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now/}
 
   export CC="ccache clang"
   export CXX="ccache clang++"
