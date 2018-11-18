@@ -54,7 +54,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         define__libc_malloc.patch
         chromium-buildname.patch
         chromium-0013-march-westmere.patch
-        enable_vaapi_on_linux_2.diff
         revert-Xclang-instcombine-lower-dbg-declare.patch
         suppress-newer-clang-warning-flags.patch
         specify-gcc-standard.patch
