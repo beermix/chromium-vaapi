@@ -228,6 +228,11 @@ build() {
     'is_debug=false'
     'enable_vr=false'
     'enable_vulkan=false'
+    'enable_google_now=false'
+    'is_desktop_linux=true'
+    'enable_wayland_server=false'
+    'use_v8_context_snapshot=false'
+    'use_sysroot=true'
   )
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
