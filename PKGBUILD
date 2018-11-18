@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=11
+pkgrel=12
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -76,9 +76,9 @@ declare -gA _system_libs=(
   #[icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  #[libpng]=libpng            # https://crbug.com/752403#c10
-  #[libxml]=libxml2
-  #[libxslt]=libxslt
+  [libpng]=libpng            # https://crbug.com/752403#c10
+  [libxml]=libxml2
+  [libxslt]=libxslt
   [yasm]=
   #[zlib]=minizip
 )
@@ -134,24 +134,24 @@ prepare() {
 
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0013-march-westmere.patch
-  #patch -Np1 -i ../chromium-0002-allow-root.patch
-  #patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
+  patch -Np1 -i ../chromium-0002-allow-root.patch
+  patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../chromium-70-gtk2.patch
 
   msg2 'Applying Other patches'
-  #patch -Np1 -i ../fixes_mojo.patch
-  #patch -Np1 -i ../notifications-nicer.patch
-  #patch -Np1 -i ../remove-linux-kernel-dependency.patch
-  #patch -Np1 -i ../stdatomic.patch
-  #patch -Np1 -i ../unrar.patch
-  #patch -Np1 -i ../title-bar-default-system.patch
+  patch -Np1 -i ../fixes_mojo.patch
+  patch -Np1 -i ../notifications-nicer.patch
+  patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  patch -Np1 -i ../stdatomic.patch
+  patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../title-bar-default-system.patch
 
-  #patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
-  #patch -Np1 -i ../chromium-58-glib.patch
-  #patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
+  patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
+  patch -Np1 -i ../chromium-58-glib.patch
+  patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
-  #patch -Np1 -i ../default-allocator.patch
-  #patch -Np1 -i ../define__libc_malloc.patch
+  patch -Np1 -i ../default-allocator.patch
+  patch -Np1 -i ../define__libc_malloc.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -195,7 +195,7 @@ build() {
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
     'clang_use_chrome_plugins=false'
-    'is_official_build=false' # implies is_cfi=true on x86_64
+    'is_official_build=true' # implies is_cfi=true on x86_64
     'treat_warnings_as_errors=false'
     'fieldtrial_testing_like_official_build=true'
     'ffmpeg_branding="Chrome"'
