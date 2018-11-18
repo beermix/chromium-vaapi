@@ -221,6 +221,8 @@ build() {
     'use_gold=false'
     'use_kerberos=false'
     'is_debug=false'
+    'enable_vr=false'
+    'enable_vulkan=false'
   )
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
