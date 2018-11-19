@@ -213,7 +213,7 @@ build() {
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'enable_hangout_services_extension=true'
-    'enable_widevine=true'
+    'enable_widevine=false'
     'enable_nacl_nonsfi=false'
     'enable_nacl=false'
     'enable_swiftshader=false'
