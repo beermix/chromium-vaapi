@@ -245,7 +245,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  noti ninja -j7 -C out/Release chrome chrome_sandbox
+  noti ninja -j8 -C out/Release chrome chrome_sandbox
 }
 
 package() {
