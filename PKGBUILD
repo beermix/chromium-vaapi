@@ -82,7 +82,7 @@ declare -gA _system_libs=(
   [libxslt]=libxslt
   #[opus]=opus
   #[re2]=re2
-  [snappy]=snappy
+  #[snappy]=snappy
   [yasm]=
   #[zlib]=minizip
 )
@@ -245,7 +245,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20 noti ninja -j8 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -C out/Release chrome chrome_sandbox
 }
 
 package() {
