@@ -180,9 +180,9 @@ build() {
   export CCACHE_SLOPPINESS=time_macros
   #export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime
 
-  CFLAGS=${CFLAGS/-fno-plt/}
-  CXXFLAGS=${CXXFLAGS/-fno-plt/}
-  LDFLAGS=${LDFLAGS/,-z,now/}
+  #CFLAGS=${CFLAGS/-fno-plt/}
+  #CXXFLAGS=${CXXFLAGS/-fno-plt/}
+  #LDFLAGS=${LDFLAGS/,-z,now/}
 
   #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
   CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
