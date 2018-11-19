@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=70.0.3538.102
-pkgrel=13
+pkgrel=14
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -81,10 +81,10 @@ declare -gA _system_libs=(
   [libxml]=libxml2
   [libxslt]=libxslt
   #[opus]=opus
-  #[re2]=re2
-  #[snappy]=snappy
+  [re2]=re2
+  [snappy]=snappy
   [yasm]=
-  #[zlib]=minizip
+  [zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
