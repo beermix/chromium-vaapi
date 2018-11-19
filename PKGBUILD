@@ -187,8 +187,8 @@ build() {
   #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
   CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
   CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  CFLAGS=${CFLAGS/-pipe/}
-  CXXFLAGS=${CXXFLAGS/-pipe/}
+  #CFLAGS=${CFLAGS/-pipe/}
+  #CXXFLAGS=${CXXFLAGS/-pipe/}
 
   export CC="ccache clang"
   export CXX="ccache clang++"
