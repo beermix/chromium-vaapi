@@ -141,19 +141,19 @@ prepare() {
   patch -Np1 -i ../chromium-70-gtk2.patch
 
   msg2 'Applying Other patches'
-  patch -Np1 -i ../fixes_mojo.patch
-  patch -Np1 -i ../notifications-nicer.patch
-  patch -Np1 -i ../remove-linux-kernel-dependency.patch
-  patch -Np1 -i ../stdatomic.patch
-  patch -Np1 -i ../unrar.patch
-  patch -Np1 -i ../title-bar-default-system.patch
+  #patch -Np1 -i ../fixes_mojo.patch
+  #patch -Np1 -i ../notifications-nicer.patch
+  #patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  #patch -Np1 -i ../stdatomic.patch
+  #patch -Np1 -i ../unrar.patch
+  #patch -Np1 -i ../title-bar-default-system.patch
 
-  patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
-  patch -Np1 -i ../chromium-58-glib.patch
-  patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
+  #patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
+  #patch -Np1 -i ../chromium-58-glib.patch
+  #patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
-  patch -Np1 -i ../default-allocator.patch
-  patch -Np1 -i ../define__libc_malloc.patch
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -185,8 +185,8 @@ build() {
   #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
   CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
   CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  #CFLAGS=${CFLAGS/-pipe/}
-  #CXXFLAGS=${CXXFLAGS/-pipe/}
+  CFLAGS=${CFLAGS/-pipe/}
+  CXXFLAGS=${CXXFLAGS/-pipe/}
 
   export CC="ccache clang"
   export CXX="ccache clang++"
