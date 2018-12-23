@@ -10,8 +10,10 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=70.0.3538.110
-pkgrel=150
+pkgver=71.0.3578.98
+pkgrel=1
+_launcher_ver=6
+pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -32,6 +34,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-harfbuzz-r0.patch
         chromium-widevine-r2.patch
         chromium-system-icu.patch
+        chromium-widevine.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
         chromium-0002-allow-root.patch
@@ -75,7 +78,7 @@ declare -gA _system_libs=(
   [icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  [libpng]=libpng            # https://crbug.com/752403#c10
+  #[libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   #[opus]=opus
@@ -110,8 +113,8 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
 
-  # https://crbug.com/879900
-  patch -Np1 -i ../include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
+  # Load Widevine CDM if available
+  patch -Np1 -i ../chromium-widevine.patch
 
   # https://crbug.com/skia/6663#c10
   patch -Np4 -i ../chromium-skia-harmony.patch
@@ -123,6 +126,11 @@ prepare() {
   # https://bugs.gentoo.org/661880#c21
   patch -Np1 -i ../chromium-system-icu.patch
 
+  # Remove compiler flags not supported by our system clang
+  sed -i \
+    -e '/"-Wno-defaulted-function-deleted"/d' \
+    build/config/compiler/BUILD.gn
+
   # Force script incompatible with Python 3 to use /usr/bin/python2
   sed -i '1s|python$|&2|' third_party/dom_distiller_js/protoc_plugins/*.py
 
@@ -131,7 +139,7 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
-  patch -Np1 -i ../cfi-vaapi-fix.patch
+  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
@@ -211,8 +219,7 @@ build() {
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
     'enable_hangout_services_extension=true'
-    'enable_widevine=false'
-    'enable_nacl_nonsfi=false'
+    'enable_widevine=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
