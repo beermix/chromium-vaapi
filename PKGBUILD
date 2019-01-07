@@ -1,4 +1,4 @@
-# Maintainer: Kien Dang Tran loganeast257@gmail.com
+# Maintainer: Kien Dang Tran loganeast257@gmail.com 
 # Ex-Maintainer: Samantha McVey samantham@posteo.net
 # Based off the official Chromium package, but with a patch to enable VA-API
 # The VA-API patch is taken from the chromium-dev package source
@@ -11,16 +11,18 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=1
+pkgrel=3
 _launcher_ver=6
-pkgdesc="Chromium with VA-API support to enable hardware acceleration"
+pkgdesc="Chromium with VA-API support to enable hardware acceleration +png"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'libxss' 'libgcrypt' 'systemd' 'dbus' 'pciutils' 'libva')
+depends=('gtk3' 'nss' 'alsa-lib' 'libxss'  'libgcrypt'
+         'systemd' 'dbus' 'json-glib'
+         'libva')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 're2' 'snappy' 'minizip')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -30,13 +32,13 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-vdpau-driver-chromium: support HW acceleration on Nvidia graphics cards')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
-        include-stdint.h-in-pdfium_mem_buffer_file_write.h.patch
+        chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-harfbuzz-r0.patch
-        chromium-widevine-r2.patch
         chromium-system-icu.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
+        chromium-vaapi-r21.patch
         chromium-0002-allow-root.patch
         chromium-0003_oe-root-filesystem-is-readonly.patch
         chromium-70-gtk2.patch
@@ -67,6 +69,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         title-bar-default-system.patch
         widevine-other-locations.patch
         chromium-70.0.3538.67-sandbox-pie.patch
+        chromium-FORTIFY_SOURCE-r2.patch
         chromium-ffmpeg-ebp-r1.patch)
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -77,19 +80,19 @@ declare -gA _system_libs=(
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
   [libdrm]=
-  [libjpeg]=libjpeg
+  #[libjpeg]=libjpeg
   #[libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   #[opus]=opus
   #[re2]=re2
-  [snappy]=snappy
+  #[snappy]=snappy
   [yasm]=
   [zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
-  ${_system_libs[libjpeg]+libjpeg_turbo}
+#  ${_system_libs[libjpeg]+libjpeg_turbo}
 )
 depends+=(${_system_libs[@]})
 
@@ -121,10 +124,10 @@ prepare() {
 
   # Fixes from Gentoo
   patch -Np1 -i ../chromium-harfbuzz-r0.patch
-  patch -Np1 -i ../chromium-widevine-r2.patch
 
   # https://bugs.gentoo.org/661880#c21
   patch -Np1 -i ../chromium-system-icu.patch
+
 
   # Remove compiler flags not supported by our system clang
   sed -i \
@@ -139,29 +142,24 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
-  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0013-march-westmere.patch
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
-  patch -Np1 -i ../chromium-70-gtk2.patch
+#  patch -Np1 -i ../chromium-70-gtk2.patch
 
   msg2 'Applying Other patches'
-  #patch -Np1 -i ../fixes_mojo.patch
-  #patch -Np1 -i ../notifications-nicer.patch
-  #patch -Np1 -i ../remove-linux-kernel-dependency.patch
-  #patch -Np1 -i ../stdatomic.patch
-  #patch -Np1 -i ../unrar.patch
+  #patch -Np1 -i ../chromium-FORTIFY_SOURCE-r2.patch
+  patch -Np1 -i ../notifications-nicer.patch
+  patch -Np1 -i ../unrar.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
-  #patch -Np1 -i ../chromium-70.0.3538.67-sandbox-pie.patch
   #patch -Np1 -i ../chromium-58-glib.patch
-  #patch -Np1 -i ../chromium-ffmpeg-ebp-r1.patch
 
-  #patch -Np1 -i ../default-allocator.patch
-  #patch -Np1 -i ../define__libc_malloc.patch
+  patch -Np1 -i ../default-allocator.patch
+  patch -Np1 -i ../define__libc_malloc.patch
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
@@ -191,10 +189,10 @@ build() {
   #LDFLAGS=${LDFLAGS/,-z,now/}
 
   #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
-  CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  CFLAGS=${CFLAGS/-pipe/}
-  CXXFLAGS=${CXXFLAGS/-pipe/}
+  #CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
+  #CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
+  #CFLAGS=${CFLAGS/-pipe/}
+  #CXXFLAGS=${CXXFLAGS/-pipe/}
 
   export CC="ccache clang"
   export CXX="ccache clang++"
@@ -213,13 +211,12 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=2'
     'use_gnome_keyring=false'
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
-    'enable_hangout_services_extension=true'
-    'enable_widevine=true'
+    'enable_hangout_services_extension=false'
+    'enable_widevine=false'
     'enable_nacl=false'
     'enable_swiftshader=false'
     "google_api_key=\"${_google_api_key}\""
@@ -231,6 +228,7 @@ build() {
     'use_kerberos=false'
     'is_debug=false'
     'enable_vr=false'
+    'use_system_libpng=false'
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'enable_wayland_server=false'
@@ -250,7 +248,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20 noti ninja -j6 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
 }
 
 package() {
