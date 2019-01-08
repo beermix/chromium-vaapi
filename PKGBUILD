@@ -265,12 +265,9 @@ build() {
 
   export CC="ccache clang"
   export CXX="ccache clang++"
-  
-  #export AR=ar
-  #export NM=nm
-  
-  export AR=llvm-ar
-  export NM=llvm-nm
+  export AR=ar
+  export NM=nm
+
 
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
