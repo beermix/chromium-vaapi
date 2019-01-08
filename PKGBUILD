@@ -268,7 +268,6 @@ build() {
   export AR=ar
   export NM=nm
 
-
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
     'host_toolchain="//build/toolchain/linux/unbundle:default"'
@@ -302,11 +301,6 @@ build() {
     'is_desktop_linux=true'
     'use_dbus=true'
     'use_system_zlib=true'
-    'use_system_freetype=true'
-    'use_system_libdrm=true'
-    'use_system_libpng=false'
-    'use_system_harfbuzz=true'
-    'use_system_libjpeg=true'
     'use_gio=true'
     'use_libpci=true'
     'icu_use_data_file=false'
