@@ -50,11 +50,11 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         notifications-nicer.patch
         title-bar-default-system.patch
         android.patch
-as-needed.patch
-attribute.patch
-autocompletematch.patch
-bootstrap.patch
-empty-array.patch
+        as-needed.patch
+        attribute.patch
+        autocompletematch.patch
+        bootstrap.patch
+        empty-array.patch
 fuzzers.patch
 google-api-warning.patch
 gpu-timeout.patch
@@ -126,33 +126,32 @@ prepare() {
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   #patch -Np1 -i ../notifications-nicer.patch
-  #patch -Np1 -i ../unrar.patch
   #patch -Np1 -i ../title-bar-default-system.patch
   
   patch -Np1 -i ../android.patch
   patch -Np1 -i ../as-needed.patch
   patch -Np1 -i ../attribute.patch
   patch -Np1 -i ../autocompletematch.patch
-  patch -Np1 -i ../bootstrap.patch
-  patch -Np1 -i ../empty-array.patch
+  #patch -Np1 -i ../bootstrap.patch
+  #patch -Np1 -i ../empty-array.patch
+  
   patch -Np1 -i ../fuzzers.patch
   patch -Np1 -i ../google-api-warning.patch
   patch -Np1 -i ../gpu-timeout.patch
   patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../inspector.patch
-  patch -Np1 -i ../installer.patch
   patch -Np1 -i ../mojo.patch
-  patch -Np1 -i ../openh264.patch
   patch -Np1 -i ../ownership-error.patch
   patch -Np1 -i ../parallel.patch
   patch -Np1 -i ../perfetto.patch
   patch -Np1 -i ../signin.patch
   patch -Np1 -i ../sizet.patch
-  patch -Np1 -i ../swiftshader.patch
-  patch -Np1 -i ../third-party-cookies.patch
+  #patch -Np1 -i ../swiftshader.patch
+  #patch -Np1 -i ../third-party-cookies.patch
   patch -Np1 -i ../unrar.patch
-
-  #patch -Np1 -i ../chromium-58-glib.patch
+  
+    #patch -Np1 -i ../installer.patch
+  #patch -Np1 -i ../openh264.patch
 
   #patch -Np1 -i ../default-allocator.patch
   #patch -Np1 -i ../define__libc_malloc.patch
@@ -170,6 +169,9 @@ build() {
   export CXX="ccache clang++"
   export AR=ar
   export NM=nm
+  
+  #export AR=llvm-ar
+  #export NM=llvm-nm
 
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
@@ -213,7 +215,6 @@ build() {
     'use_libpci=true'
     'icu_use_data_file=false'
     'enable_remoting=false'
-    ~/.aa/chromium/chromium-vaapi
     'enable_wayland_server=false'
   )
 
