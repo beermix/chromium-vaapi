@@ -103,14 +103,14 @@ prepare() {
   patch -Np1 -i ../chromium-0013-march-westmere.patch
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
-  patch -Np1 -i ../notifications-nicer.patch
+  #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../unrar.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
   #patch -Np1 -i ../chromium-58-glib.patch
 
-  #patch -Np1 -i ../default-allocator.patch
-  #patch -Np1 -i ../define__libc_malloc.patch
+  patch -Np1 -i ../default-allocator.patch
+  patch -Np1 -i ../define__libc_malloc.patch
 
   python2 build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
