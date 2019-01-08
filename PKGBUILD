@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=5
+pkgrel=6
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -50,30 +50,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         notifications-nicer.patch
         title-bar-default-system.patch
         widevine-other-locations.patch)
-
-# Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
-# Keys are the names in the above script; values are the dependencies in Arch
-declare -gA _system_libs=(
-  [fontconfig]=fontconfig
-  [freetype]=freetype2
-  [harfbuzz-ng]=harfbuzz
-  [icu]=icu
-  [libdrm]=
-  [libjpeg]=libjpeg
-  #[libpng]=libpng            # https://crbug.com/752403#c10
-  [libxml]=libxml2
-  [libxslt]=libxslt
-  #[opus]=opus
-  [re2]=re2
-  [snappy]=snappy
-  [yasm]=
-  [zlib]=minizip
-)
-_unwanted_bundled_libs=(
-  ${!_system_libs[@]}
-  ${_system_libs[libjpeg]+libjpeg_turbo}
-)
-depends+=(${_system_libs[@]})
 
 # Google API keys (see https://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Arch Linux use ONLY. For your own distribution, please
@@ -129,25 +105,12 @@ prepare() {
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../unrar.patch
-  patch -Np1 -i ../title-bar-default-system.patch
+  #patch -Np1 -i ../title-bar-default-system.patch
 
-  patch -Np1 -i ../chromium-58-glib.patch
+  #patch -Np1 -i ../chromium-58-glib.patch
 
-  patch -Np1 -i ../default-allocator.patch
-  patch -Np1 -i ../define__libc_malloc.patch
-
-  # Remove bundled libraries for which we will use the system copies; this
-  # *should* do what the remove_bundled_libraries.py script does, with the
-  # added benefit of not having to list all the remaining libraries
-  local _lib
-  for _lib in ${_unwanted_bundled_libs[@]}; do
-    find "third_party/$_lib" -type f \
-      \! -path "third_party/$_lib/chromium/*" \
-      \! -path "third_party/$_lib/google/*" \
-      \! -path 'third_party/yasm/run_yasm.py' \
-      \! -regex '.*\.\(gn\|gni\|isolate\)' \
-      -delete
-  done
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
 
   python2 build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
@@ -212,7 +175,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -C out/Release chrome chrome_sandbox
 }
 
 package() {
