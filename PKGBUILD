@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=10
+pkgrel=11
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -265,11 +265,12 @@ build() {
 
   export CC="ccache clang"
   export CXX="ccache clang++"
-  export AR=ar
-  export NM=nm
   
-  #export AR=llvm-ar
-  #export NM=llvm-nm
+  #export AR=ar
+  #export NM=nm
+  
+  export AR=llvm-ar
+  export NM=llvm-nm
 
   local _flags=(
     'custom_toolchain="//build/toolchain/linux/unbundle:default"'
@@ -330,7 +331,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20 noti ninja -C out/Release chrome chrome_sandbox
+  noti ninja -C out/Release chrome chrome_sandbox # ionice -c3 nice -n20 
 }
 
 package() {
