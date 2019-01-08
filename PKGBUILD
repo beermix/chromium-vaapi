@@ -11,9 +11,9 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=4
+pkgrel=5
 _launcher_ver=6
-pkgdesc="Chromium with VA-API support to enable hardware acceleration +png"
+pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
@@ -38,39 +38,18 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-widevine.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
-        chromium-vaapi-r21.patch
         chromium-0002-allow-root.patch
         chromium-0003_oe-root-filesystem-is-readonly.patch
-        chromium-70-gtk2.patch
-        unrar.patch
-        silencegcc.patch
         chromium-vaapi-r21.patch
         chromium-58-glib.patch
-        chromium-69-cinnamon.patch
-        chromium-69-gcc7-my-icu.patch
-        chromium-69-gcc8.patch
-        chromium-70-gcc8-71.patch
-        chromium-compiler-r4.patch
         chromium-0002-Wall.patch
-        fixes_mojo.patch
-        libcxx.patch
-        chromium-system-icu.patch
         default-allocator.patch
         define__libc_malloc.patch
         chromium-buildname.patch
         chromium-0013-march-westmere.patch
-        revert-Xclang-instcombine-lower-dbg-declare.patch
-        suppress-newer-clang-warning-flags.patch
-        specify-gcc-standard.patch
-        fix-build-on-older-gcc.patch
-        stdatomic.patch
-        remove-linux-kernel-dependency.patch
         notifications-nicer.patch
         title-bar-default-system.patch
-        widevine-other-locations.patch
-        chromium-70.0.3538.67-sandbox-pie.patch
-        chromium-FORTIFY_SOURCE-r2.patch
-        chromium-ffmpeg-ebp-r1.patch)
+        widevine-other-locations.patch)
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -80,13 +59,13 @@ declare -gA _system_libs=(
   [harfbuzz-ng]=harfbuzz
   [icu]=icu
   [libdrm]=
-  #[libjpeg]=libjpeg
+  [libjpeg]=libjpeg
   #[libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
   #[opus]=opus
-  #[re2]=re2
-  #[snappy]=snappy
+  [re2]=re2
+  [snappy]=snappy
   [yasm]=
   [zlib]=minizip
 )
@@ -140,7 +119,6 @@ prepare() {
   mkdir -p third_party/node/linux/node-linux-x64/bin
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
-  # VA-API patch
   msg2 'Applying VA-API patches'
   # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
@@ -149,15 +127,11 @@ prepare() {
   patch -Np1 -i ../chromium-0013-march-westmere.patch
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
-#  patch -Np1 -i ../chromium-70-gtk2.patch
-
-  msg2 'Applying Other patches'
-  #patch -Np1 -i ../chromium-FORTIFY_SOURCE-r2.patch
   patch -Np1 -i ../notifications-nicer.patch
-  patch -Np1 -i ../unrar.patch
-  #patch -Np1 -i ../title-bar-default-system.patch
+  #patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../title-bar-default-system.patch
 
-  #patch -Np1 -i ../chromium-58-glib.patch
+  patch -Np1 -i ../chromium-58-glib.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
@@ -219,7 +193,6 @@ build() {
     'use_kerberos=false'
     'is_debug=false'
     'enable_vr=false'
-    'use_system_libpng=false'
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'enable_wayland_server=false'
