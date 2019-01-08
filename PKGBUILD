@@ -71,7 +71,54 @@ sizet.patch
 swiftshader.patch
 third-party-cookies.patch
 unrar.patch
-        widevine-other-locations.patch)
+flag-for-search-engine-collection.patch
+flag-to-configure-extension-downloading.patch
+flag-to-disable-beforeunload.patch
+flag-to-enable-potentially-annoying-security-features.patch
+flag-to-force-punycode-hostnames.patch
+flag-to-hide-crashed-bubble.patch
+flag-to-show-avatar-button.patch
+flag-to-stack-tabs.patch
+ipv6-probing-option.patch
+suggestions-url-field.patch
+third-party-ungoogled.patch
+block-trk-and-subdomains.patch
+clear-http-auth-cache-menu-item.patch
+default-to-https-scheme.patch
+disable-crash-reporter.patch
+disable-domain-reliability.patch
+disable-download-quarantine.patch
+disable-fonts-googleapis-references.patch
+disable-formatting-in-omnibox.patch
+disable-gaia.patch
+disable-gcm.patch
+disable-google-host-detection.patch
+disable-intranet-redirect-detector.patch
+disable-mei-preload.patch
+disable-network-time-tracker.patch
+disable-profile-avatar-downloading.patch
+disable-signin.patch
+disable-translate.patch
+disable-untraceable-urls.patch
+disable-webgl-renderer-info.patch
+disable-webrtc-log-uploader.patch
+disable-webstore-urls.patch
+enable-page-saving-on-more-pages.patch
+fix-building-without-mdns-and-service-discovery.patch
+fix-building-without-one-click-signin.patch
+fix-building-without-safebrowsing.patch
+fix-learn-doubleclick-hsts.patch
+no-such-option-no-sysroot.patch
+popups-to-tabs.patch
+remove-disable-setuid-sandbox-as-bad-flag.patch
+remove-fcomplete-member-pointers-cflag.patch
+remove-third-party-analytics.patch
+replace-google-search-engine-with-nosearch.patch
+searx.patch
+use-local-devtools-files.patch
+fix-libva1-compatibility.patch
+fix-nullptr-t-namespace.patch
+widevine-other-locations.patch)
 
 # Google API keys (see https://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Arch Linux use ONLY. For your own distribution, please
@@ -146,11 +193,62 @@ prepare() {
   patch -Np1 -i ../perfetto.patch
   patch -Np1 -i ../signin.patch
   patch -Np1 -i ../sizet.patch
+  
+  #patch -Np1 -i ../flag-for-search-engine-collection.patch
+  #patch -Np1 -i ../flag-to-configure-extension-downloading.patch
+  #patch -Np1 -i ../flag-to-disable-beforeunload.patch
+  #patch -Np1 -i ../flag-to-enable-potentially-annoying-security-features.patch
+  #patch -Np1 -i ../flag-to-force-punycode-hostnames.patch
+  #patch -Np1 -i ../flag-to-hide-crashed-bubble.patch
+  #patch -Np1 -i ../flag-to-show-avatar-button.patch
+  #patch -Np1 -i ../flag-to-stack-tabs.patch
+  
+  #apatch -Np1 -i ../ipv6-probing-option.patch
+#patch -Np1 -i ../suggestions-url-field.patch
+#patch -Np1 -i ../third-party-ungoogled.patch
+#patch -Np1 -i ../block-trk-and-subdomains.patch
+#patch -Np1 -i ../clear-http-auth-cache-menu-item.patch
+#patch -Np1 -i ../default-to-https-scheme.patch
+#patch -Np1 -i ../disable-crash-reporter.patch
+#patch -Np1 -i ../disable-domain-reliability.patch
+#patch -Np1 -i ../disable-download-quarantine.patch
+#patch -Np1 -i ../disable-fonts-googleapis-references.patch
+#patch -Np1 -i ../disable-formatting-in-omnibox.patch
+#patch -Np1 -i ../disable-gaia.patch
+#patch -Np1 -i ../disable-gcm.patch
+#patch -Np1 -i ../disable-google-host-detection.patch
+#patch -Np1 -i ../disable-intranet-redirect-detector.patch
+#patch -Np1 -i ../disable-mei-preload.patch
+#patch -Np1 -i ../disable-network-time-tracker.patch
+#patch -Np1 -i ../disable-profile-avatar-downloading.patch
+#patch -Np1 -i ../disable-signin.patch
+#patch -Np1 -i ../disable-translate.patch
+#patch -Np1 -i ../disable-untraceable-urls.patch
+#patch -Np1 -i ../disable-webgl-renderer-info.patch
+#patch -Np1 -i ../disable-webrtc-log-uploader.patch
+#patch -Np1 -i ../disable-webstore-urls.patch
+#patch -Np1 -i ../enable-page-saving-on-more-pages.patch
+#patch -Np1 -i ../fix-building-without-mdns-and-service-discovery.patch
+#patch -Np1 -i ../fix-building-without-one-click-signin.patch
+#patch -Np1 -i ../fix-building-without-safebrowsing.patch
+#patch -Np1 -i ../fix-learn-doubleclick-hsts.patch
+#patch -Np1 -i ../no-such-option-no-sysroot.patch
+#patch -Np1 -i ../popups-to-tabs.patch
+#patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+#patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+#patch -Np1 -i ../remove-third-party-analytics.patch
+#patch -Np1 -i ../replace-google-search-engine-with-nosearch.patch
+#patch -Np1 -i ../searx.patch
+
+  patch -Np1 -i ../use-local-devtools-files.patch
+  patch -Np1 -i ../fix-libva1-compatibility.patch
+  patch -Np1 -i ../fix-nullptr-t-namespace.patch
+
   #patch -Np1 -i ../swiftshader.patch
   #patch -Np1 -i ../third-party-cookies.patch
   patch -Np1 -i ../unrar.patch
-  
-    #patch -Np1 -i ../installer.patch
+
+  #patch -Np1 -i ../installer.patch
   #patch -Np1 -i ../openh264.patch
 
   #patch -Np1 -i ../default-allocator.patch
