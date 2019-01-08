@@ -10,7 +10,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=71.0.3578.98
+pkgver=71.0.3578.98-2
 pkgrel=6
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
@@ -31,7 +31,7 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-mesa-driver: support HW acceleration on AMD graphics cards'
             'libva-vdpau-driver-chromium: support HW acceleration on Nvidia graphics cards')
 install=chromium.install
-source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
+source=(https://github.com/Eloston/ungoogled-chromium/archive/$pkgver.tar.gz
         chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-harfbuzz-r0.patch
         chromium-system-icu.patch
