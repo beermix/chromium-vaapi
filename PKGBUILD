@@ -1,4 +1,4 @@
-# Maintainer: Kien Dang Tran loganeast257@gmail.com 
+# Maintainer: Kien Dang Tran loganeast257@gmail.com
 # Ex-Maintainer: Samantha McVey samantham@posteo.net
 # Based off the official Chromium package, but with a patch to enable VA-API
 # The VA-API patch is taken from the chromium-dev package source
@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=3
+pkgrel=4
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration +png"
 arch=('x86_64')
@@ -92,7 +92,7 @@ declare -gA _system_libs=(
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
-#  ${_system_libs[libjpeg]+libjpeg_turbo}
+  ${_system_libs[libjpeg]+libjpeg_turbo}
 )
 depends+=(${_system_libs[@]})
 
@@ -142,6 +142,7 @@ prepare() {
 
   # VA-API patch
   msg2 'Applying VA-API patches'
+  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
@@ -182,17 +183,7 @@ build() {
   cd "$srcdir/chromium-$pkgver"
 
   export CCACHE_SLOPPINESS=time_macros
-  #export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime
 
-  #CFLAGS=${CFLAGS/-fno-plt/}
-  #CXXFLAGS=${CXXFLAGS/-fno-plt/}
-  #LDFLAGS=${LDFLAGS/,-z,now/}
-
-  #CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
-  #CFLAGS=${CFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  #CXXFLAGS=${CXXFLAGS/--param=ssp-buffer-size=4 -fstack-protector/}
-  #CFLAGS=${CFLAGS/-pipe/}
-  #CXXFLAGS=${CXXFLAGS/-pipe/}
 
   export CC="ccache clang"
   export CXX="ccache clang++"
