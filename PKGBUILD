@@ -22,7 +22,7 @@ depends=('gtk2' 'nss' 'alsa-lib' 'libxss'  'libgcrypt'
          'libva')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -366,7 +366,7 @@ depends+=(${_system_libs[@]})
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20 noti ninja -j3 -C out/Release chrome chrome_sandbox
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
 }
 
 package() {
