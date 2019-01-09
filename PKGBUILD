@@ -321,8 +321,8 @@ declare -gA _system_libs=(
   #[libpng]=libpng            # https://crbug.com/752403#c10
   [libxml]=libxml2
   [libxslt]=libxslt
-  [re2]=re2
-  [snappy]=snappy
+  #[re2]=re2
+  #[snappy]=snappy
   [yasm]=
   [zlib]=minizip
 )
