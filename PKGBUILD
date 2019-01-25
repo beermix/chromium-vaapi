@@ -11,15 +11,15 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=100
+pkgrel=101
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'desktop-file-utils' 'libva' 'at-spi2-atk' 'at-spi2-core' 'clang' 'lld' 'yasm')
+depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'libva' 'at-spi2-atk' 'at-spi2-core')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot' 'automake' 'autoconf' 'bison' 'flex' 'm4')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
