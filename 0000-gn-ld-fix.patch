@@ -1,0 +1,15 @@
+diff --git a/build/gen.py b/build/gen.py
+index ee4f8e14..861f00b6 100755
+--- a/build/gen.py
++++ b/build/gen.py
+@@ -299,8 +299,8 @@ def WriteGNNinja(path, platform, host, options):
+           ldflags.append('-Wl,-strip-all')
+ 
+       # Enable identical code-folding.
+-      if not platform.is_darwin():
+-        ldflags.append('-Wl,--icf=all')
++     # if not platform.is_darwin():
++     #   ldflags.append('-Wl,--icf=all')
+ 
+     cflags.extend([
+         '-D_FILE_OFFSET_BITS=64',

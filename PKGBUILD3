@@ -11,13 +11,15 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=2
+pkgrel=20
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'desktop-file-utils' 'libva' 'at-spi2-atk' 'at-spi2-core' 'clang' 'lld' 'yasm')
+depends=('gtk3' 'nss' 'alsa-lib' 'xdg-utils' 'libxss' 'libcups' 'libgcrypt'
+         'ttf-font' 'systemd' 'dbus' 'libpulse' 'pciutils' 'json-glib'
+         'desktop-file-utils' 'hicolor-icon-theme' 'libva')
 provides=('chromium')
 conflicts=('chromium')
 makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot')
@@ -36,7 +38,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-widevine.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
-        chromium-vaapi-r21.patch
         chromium-0002-allow-root.patch
         chromium-0003_oe-root-filesystem-is-readonly.patch
         chromium-vaapi-r21.patch
@@ -119,28 +120,6 @@ fix-libva1-compatibility.patch
 fix-nullptr-t-namespace.patch
 widevine-other-locations.patch)
 
-# Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
-# Keys are the names in the above script; values are the dependencies in Arch
-declare -gA _system_libs=(
-  [fontconfig]=fontconfig
-  [freetype]=freetype2
-  [harfbuzz-ng]=harfbuzz
-  [icu]=icu
-  [libdrm]=
-  [libjpeg]=libjpeg
-  [libxml]=libxml2
-  [libxslt]=libxslt
-  #[re2]=re2
-  #[snappy]=snappy
-  [yasm]=
-  #[zlib]=minizip
-)
-_unwanted_bundled_libs=(
-  ${!_system_libs[@]}
-  ${_system_libs[libjpeg]+libjpeg_turbo}
-)
-depends+=(${_system_libs[@]})
-
 # Google API keys (see https://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Arch Linux use ONLY. For your own distribution, please
 # get your own set of keys.
@@ -188,28 +167,21 @@ prepare() {
   msg2 'Applying VA-API patches'
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
-  patch -Np1 -i ../gtk2.patch
-
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
-  # Remove bundled libraries for which we will use the system copies; this
-  # *should* do what the remove_bundled_libraries.py script does, with the
-  # added benefit of not having to list all the remaining libraries
-  local _lib
-  for _lib in ${_unwanted_bundled_libs[@]}; do
-    find "third_party/$_lib" -type f \
-      \! -path "third_party/$_lib/chromium/*" \
-      \! -path "third_party/$_lib/google/*" \
-      \! -path 'third_party/yasm/run_yasm.py' \
-      \! -regex '.*\.\(gn\|gni\|isolate\)' \
-      -delete
-  done
-
-  python2 build/linux/unbundle/replace_gn_files.py \
+  patch -Np1 -i ../android.patch
+  patch -Np1 -i ../as-needed.patch
+  patch -Np1 -i ../attribute.patch
+  patch -Np1 -i ../autocompletematch.patch
+  #patch -Np1 -i ../bootstrap.patch
+  #patch -Np1 -i ../empty-array.patch
+  
+  
+   python2 build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
 }
 
@@ -235,7 +207,18 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=2'
+    'use_gnome_keyring=false'
+    'use_sysroot=false'
+    'linux_use_bundled_binutils=false'
+    'use_custom_libcxx=false'
+    'enable_hangout_services_extension=true'
+    'enable_widevine=true'
+    'enable_nacl=false'
+    'enable_swiftshader=false'
+    "google_api_key=\"${_google_api_key}\""
+    "google_default_client_id=\"${_google_default_client_id}\""
+    "google_default_client_secret=\"${_google_default_client_secret}\""
+    'use_vaapi=true'
     'remove_webcore_debug_symbols=true'
     'use_gold=false'
     'use_kerberos=false'
@@ -246,36 +229,11 @@ build() {
     'use_dbus=true'
     'use_system_zlib=true'
     'use_gio=true'
-    'use_alsa=true'
-    'use_aura=true'
-    'use_glib=true'
-    'rtc_enable_protobuf=false'
-    'use_libpci=false'
+    'use_libpci=true'
     'enable_remoting=false'
     'enable_wayland_server=false'
-    'use_gnome_keyring=false'
-    'use_sysroot=false'
-    'linux_use_bundled_binutils=false'
-    'use_custom_libcxx=false'
-    'enable_hangout_services_extension=true'
-    'enable_widevine=true'
-    'enable_nacl=false'
-    'enable_swiftshader=false'
-    'use_allocator="none"'
-    'fatal_linker_warnings=false'
-    'target_os="linux"'
-    'current_os="linux"'
-    'optimize_webui=false'
-    'enable_mdns=true'
-    "google_api_key=\"${_google_api_key}\""
-    "google_default_client_id=\"${_google_default_client_id}\""
-    "google_default_client_secret=\"${_google_default_client_secret}\""
-    'use_vaapi=true'
   )
-  # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
-  # 'is_clang=true' 'clang_use_chrome_plugins=false'
-  # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
-  #
+
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
@@ -294,7 +252,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver # ionice -c3 nice -n20 
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
 }
 
 package() {

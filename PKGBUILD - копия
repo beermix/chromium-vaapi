@@ -11,13 +11,15 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=2
+pkgrel=11
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
 license=('BSD')
-depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'desktop-file-utils' 'libva' 'at-spi2-atk' 'at-spi2-core' 'clang' 'lld' 'yasm')
+depends=('gtk2' 'nss' 'alsa-lib' 'libxss'  'libgcrypt'
+         'systemd' 'dbus' 'json-glib'
+         'libva')
 provides=('chromium')
 conflicts=('chromium')
 makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot')
@@ -36,7 +38,6 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         chromium-widevine.patch
         chromium-skia-harmony.patch
         cfi-vaapi-fix.patch
-        chromium-vaapi-r21.patch
         chromium-0002-allow-root.patch
         chromium-0003_oe-root-filesystem-is-readonly.patch
         chromium-vaapi-r21.patch
@@ -119,28 +120,6 @@ fix-libva1-compatibility.patch
 fix-nullptr-t-namespace.patch
 widevine-other-locations.patch)
 
-# Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
-# Keys are the names in the above script; values are the dependencies in Arch
-declare -gA _system_libs=(
-  [fontconfig]=fontconfig
-  [freetype]=freetype2
-  [harfbuzz-ng]=harfbuzz
-  [icu]=icu
-  [libdrm]=
-  [libjpeg]=libjpeg
-  [libxml]=libxml2
-  [libxslt]=libxslt
-  #[re2]=re2
-  #[snappy]=snappy
-  [yasm]=
-  #[zlib]=minizip
-)
-_unwanted_bundled_libs=(
-  ${!_system_libs[@]}
-  ${_system_libs[libjpeg]+libjpeg_turbo}
-)
-depends+=(${_system_libs[@]})
-
 # Google API keys (see https://www.chromium.org/developers/how-tos/api-keys)
 # Note: These are for Arch Linux use ONLY. For your own distribution, please
 # get your own set of keys.
@@ -186,28 +165,94 @@ prepare() {
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
   msg2 'Applying VA-API patches'
+  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
-  patch -Np1 -i ../gtk2.patch
-
   msg2 'Applying OE patches'
+  patch -Np1 -i ../chromium-0013-march-westmere.patch
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
+  
+  patch -Np1 -i ../android.patch
+  patch -Np1 -i ../as-needed.patch
+  patch -Np1 -i ../attribute.patch
+  patch -Np1 -i ../autocompletematch.patch
+  #patch -Np1 -i ../bootstrap.patch
+  #patch -Np1 -i ../empty-array.patch
+  
+  patch -Np1 -i ../fuzzers.patch
+  patch -Np1 -i ../google-api-warning.patch
+  patch -Np1 -i ../gpu-timeout.patch
+  patch -Np1 -i ../gtk2.patch
+  patch -Np1 -i ../inspector.patch
+  patch -Np1 -i ../mojo.patch
+  patch -Np1 -i ../ownership-error.patch
+  patch -Np1 -i ../parallel.patch
+  patch -Np1 -i ../perfetto.patch
+  patch -Np1 -i ../signin.patch
+  patch -Np1 -i ../sizet.patch
+  
+  #patch -Np1 -i ../flag-for-search-engine-collection.patch
+  #patch -Np1 -i ../flag-to-configure-extension-downloading.patch
+  #patch -Np1 -i ../flag-to-disable-beforeunload.patch
+  #patch -Np1 -i ../flag-to-enable-potentially-annoying-security-features.patch
+  #patch -Np1 -i ../flag-to-force-punycode-hostnames.patch
+  #patch -Np1 -i ../flag-to-hide-crashed-bubble.patch
+  #patch -Np1 -i ../flag-to-show-avatar-button.patch
+  #patch -Np1 -i ../flag-to-stack-tabs.patch
+  
+#apatch -Np1 -i ../ipv6-probing-option.patch
+#patch -Np1 -i ../suggestions-url-field.patch
+#patch -Np1 -i ../third-party-ungoogled.patch
+#patch -Np1 -i ../block-trk-and-subdomains.patch
+#patch -Np1 -i ../clear-http-auth-cache-menu-item.patch
+#patch -Np1 -i ../default-to-https-scheme.patch
+patch -Np1 -i ../disable-crash-reporter.patch
+patch -Np1 -i ../disable-domain-reliability.patch
+patch -Np1 -i ../disable-download-quarantine.patch
+patch -Np1 -i ../disable-fonts-googleapis-references.patch
+patch -Np1 -i ../disable-formatting-in-omnibox.patch
+patch -Np1 -i ../disable-gaia.patch
+patch -Np1 -i ../disable-gcm.patch
+patch -Np1 -i ../disable-google-host-detection.patch
+patch -Np1 -i ../disable-intranet-redirect-detector.patch
+patch -Np1 -i ../disable-mei-preload.patch
+patch -Np1 -i ../disable-network-time-tracker.patch
+patch -Np1 -i ../disable-profile-avatar-downloading.patch
+#patch -Np1 -i ../disable-signin.patch
+patch -Np1 -i ../disable-translate.patch
+patch -Np1 -i ../disable-untraceable-urls.patch
+patch -Np1 -i ../disable-webgl-renderer-info.patch
+patch -Np1 -i ../disable-webrtc-log-uploader.patch
+patch -Np1 -i ../disable-webstore-urls.patch
+#patch -Np1 -i ../enable-page-saving-on-more-pages.patch
+#patch -Np1 -i ../fix-building-without-mdns-and-service-discovery.patch
+#patch -Np1 -i ../fix-building-without-one-click-signin.patch
+#patch -Np1 -i ../fix-building-without-safebrowsing.patch
+#patch -Np1 -i ../fix-learn-doubleclick-hsts.patch
+#patch -Np1 -i ../no-such-option-no-sysroot.patch
+#patch -Np1 -i ../popups-to-tabs.patch
+patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+patch -Np1 -i ../remove-third-party-analytics.patch
+#patch -Np1 -i ../replace-google-search-engine-with-nosearch.patch
+#patch -Np1 -i ../searx.patch
 
-  # Remove bundled libraries for which we will use the system copies; this
-  # *should* do what the remove_bundled_libraries.py script does, with the
-  # added benefit of not having to list all the remaining libraries
-  local _lib
-  for _lib in ${_unwanted_bundled_libs[@]}; do
-    find "third_party/$_lib" -type f \
-      \! -path "third_party/$_lib/chromium/*" \
-      \! -path "third_party/$_lib/google/*" \
-      \! -path 'third_party/yasm/run_yasm.py' \
-      \! -regex '.*\.\(gn\|gni\|isolate\)' \
-      -delete
-  done
+  patch -Np1 -i ../use-local-devtools-files.patch
+  patch -Np1 -i ../fix-libva1-compatibility.patch
+  patch -Np1 -i ../fix-nullptr-t-namespace.patch
+
+  #patch -Np1 -i ../swiftshader.patch
+  #patch -Np1 -i ../third-party-cookies.patch
+  patch -Np1 -i ../unrar.patch
+
+  #patch -Np1 -i ../installer.patch
+  #patch -Np1 -i ../openh264.patch
+
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
 
   python2 build/linux/unbundle/replace_gn_files.py \
     --system-libraries "${!_system_libs[@]}"
@@ -235,7 +280,18 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
-    'gtk_version=2'
+    'use_gnome_keyring=false'
+    'use_sysroot=false'
+    'linux_use_bundled_binutils=false'
+    'use_custom_libcxx=false'
+    'enable_hangout_services_extension=false'
+    'enable_widevine=false'
+    'enable_nacl=false'
+    'enable_swiftshader=false'
+    "google_api_key=\"${_google_api_key}\""
+    "google_default_client_id=\"${_google_default_client_id}\""
+    "google_default_client_secret=\"${_google_default_client_secret}\""
+    'use_vaapi=true'
     'remove_webcore_debug_symbols=true'
     'use_gold=false'
     'use_kerberos=false'
@@ -246,36 +302,36 @@ build() {
     'use_dbus=true'
     'use_system_zlib=true'
     'use_gio=true'
-    'use_alsa=true'
-    'use_aura=true'
-    'use_glib=true'
-    'rtc_enable_protobuf=false'
-    'use_libpci=false'
+    'use_libpci=true'
+    'icu_use_data_file=false'
     'enable_remoting=false'
     'enable_wayland_server=false'
-    'use_gnome_keyring=false'
-    'use_sysroot=false'
-    'linux_use_bundled_binutils=false'
-    'use_custom_libcxx=false'
-    'enable_hangout_services_extension=true'
-    'enable_widevine=true'
-    'enable_nacl=false'
-    'enable_swiftshader=false'
-    'use_allocator="none"'
-    'fatal_linker_warnings=false'
-    'target_os="linux"'
-    'current_os="linux"'
-    'optimize_webui=false'
-    'enable_mdns=true'
-    "google_api_key=\"${_google_api_key}\""
-    "google_default_client_id=\"${_google_default_client_id}\""
-    "google_default_client_secret=\"${_google_default_client_secret}\""
-    'use_vaapi=true'
   )
-  # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
-  # 'is_clang=true' 'clang_use_chrome_plugins=false'
-  # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
-  #
+  
+  # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
+# Keys are the names in the above script; values are the dependencies in Arch
+declare -gA _system_libs=(
+  [fontconfig]=fontconfig
+  [freetype]=freetype2
+  [harfbuzz-ng]=harfbuzz
+  [icu]=icu
+  [libdrm]=
+  #[libevent]=libevent
+  [libjpeg]=libjpeg
+  #[libpng]=libpng            # https://crbug.com/752403#c10
+  [libxml]=libxml2
+  [libxslt]=libxslt
+  #[re2]=re2
+  #[snappy]=snappy
+  [yasm]=
+  [zlib]=minizip
+)
+_unwanted_bundled_libs=(
+  ${!_system_libs[@]}
+  ${_system_libs[libjpeg]+libjpeg_turbo}
+)
+depends+=(${_system_libs[@]})
+
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
@@ -288,13 +344,29 @@ build() {
   CXXFLAGS+=' -fno-unwind-tables -fno-asynchronous-unwind-tables'
   CPPFLAGS+=' -DNO_UNWIND_TABLES'
 
+# Remove bundled libraries for which we will use the system copies; this
+  # *should* do what the remove_bundled_libraries.py script does, with the
+  # added benefit of not having to list all the remaining libraries
+  local _lib
+  for _lib in ${_unwanted_bundled_libs[@]}; do
+    find -type f -path "*third_party/$_lib/*" \
+      \! -path "*third_party/$_lib/chromium/*" \
+      \! -path "*third_party/$_lib/google/*" \
+      \! -path './base/third_party/icu/*' \
+      \! -path './third_party/crashpad/crashpad/third_party/zlib/zlib_crashpad.h' \
+      \! -path './third_party/pdfium/third_party/freetype/include/pstables.h' \
+      \! -path './third_party/yasm/run_yasm.py' \
+      \! -regex '.*\.\(gn\|gni\|isolate\)' \
+      -delete
+  done
+
   ./build/linux/unbundle/replace_gn_files.py --system-libraries "${!_system_libs[@]}"
 
-  #./third_party/libaddressinput/chromium/tools/update-strings.py
+  ./third_party/libaddressinput/chromium/tools/update-strings.py
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver # ionice -c3 nice -n20 
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox
 }
 
 package() {
@@ -305,7 +377,7 @@ package() {
 
   cp \
     out/Release/{chrome_{100,200}_percent,resources}.pak \
-    out/Release/{*.bin,chromedriver} \
+    out/Release/*.bin \
     "$pkgdir/usr/lib/chromium/"
   install -Dm644 -t "$pkgdir/usr/lib/chromium/locales" out/Release/locales/*.pak
 
