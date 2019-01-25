@@ -11,8 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=3
-_launcher_ver=6
+pkgrel=100
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -30,7 +29,6 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-vdpau-driver-chromium: support HW acceleration on Nvidia graphics cards')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
-        chromium-launcher-$_launcher_ver.tar.gz::https://github.com/foutrelis/chromium-launcher/archive/v$_launcher_ver.tar.gz
         chromium-harfbuzz-r0.patch
         chromium-system-icu.patch
         chromium-widevine.patch
@@ -133,7 +131,7 @@ declare -gA _system_libs=(
   #[re2]=re2
   #[snappy]=snappy
   [yasm]=
-  #[zlib]=minizip
+  [zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
@@ -366,11 +364,11 @@ build() {
 
   ./build/linux/unbundle/replace_gn_files.py --system-libraries "${!_system_libs[@]}"
 
-  #./third_party/libaddressinput/chromium/tools/update-strings.py
+  ./third_party/libaddressinput/chromium/tools/update-strings.py
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  ionice -c3 nice -n20  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver # ionice -c3 nice -n20 
+  ionice -c3 nice -n20 noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver # ionice -c3 nice -n20 
 }
 
 package() {
