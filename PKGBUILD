@@ -10,7 +10,7 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=71.0.3578.98
+pkgver=71.0.3578.127
 pkgrel=100
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -186,7 +186,7 @@ prepare() {
   msg2 'Applying VA-API patches'
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
-  patch -Np1 -i ../gtk2.patch
+  #patch -Np1 -i ../gtk2.patch
 
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0002-allow-root.patch
@@ -341,6 +341,11 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
+    'is_cfi=false'
+    'use_lld=false'
+    'use_thin_lto=false'
+    'is_clang=true'
+    'clang_use_chrome_plugins=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
