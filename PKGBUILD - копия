@@ -203,7 +203,7 @@ prepare() {
   #patch -Np1 -i ../flag-to-show-avatar-button.patch
   #patch -Np1 -i ../flag-to-stack-tabs.patch
   
-#apatch -Np1 -i ../ipv6-probing-option.patch
+#patch -Np1 -i ../ipv6-probing-option.patch
 #patch -Np1 -i ../suggestions-url-field.patch
 #patch -Np1 -i ../third-party-ungoogled.patch
 #patch -Np1 -i ../block-trk-and-subdomains.patch

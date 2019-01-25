@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.98
-pkgrel=2
+pkgrel=3
 _launcher_ver=6
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
@@ -196,6 +196,82 @@ prepare() {
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
+###############
+
+  patch -Np1 -i ../fuzzers.patch
+  patch -Np1 -i ../google-api-warning.patch
+  patch -Np1 -i ../gpu-timeout.patch
+  patch -Np1 -i ../gtk2.patch
+  patch -Np1 -i ../inspector.patch
+  patch -Np1 -i ../mojo.patch
+  patch -Np1 -i ../ownership-error.patch
+  patch -Np1 -i ../parallel.patch
+  patch -Np1 -i ../perfetto.patch
+  patch -Np1 -i ../signin.patch
+  patch -Np1 -i ../sizet.patch
+
+  #patch -Np1 -i ../flag-for-search-engine-collection.patch
+  #patch -Np1 -i ../flag-to-configure-extension-downloading.patch
+  #patch -Np1 -i ../flag-to-disable-beforeunload.patch
+  #patch -Np1 -i ../flag-to-enable-potentially-annoying-security-features.patch
+  #patch -Np1 -i ../flag-to-force-punycode-hostnames.patch
+  #patch -Np1 -i ../flag-to-hide-crashed-bubble.patch
+  #patch -Np1 -i ../flag-to-show-avatar-button.patch
+  #patch -Np1 -i ../flag-to-stack-tabs.patch
+
+  #patch -Np1 -i ../ipv6-probing-option.patch
+  #patch -Np1 -i ../suggestions-url-field.patch
+  #patch -Np1 -i ../third-party-ungoogled.patch
+  #patch -Np1 -i ../block-trk-and-subdomains.patch
+  #patch -Np1 -i ../clear-http-auth-cache-menu-item.patch
+  #patch -Np1 -i ../default-to-https-scheme.patch
+  patch -Np1 -i ../disable-crash-reporter.patch
+  patch -Np1 -i ../disable-domain-reliability.patch
+  patch -Np1 -i ../disable-download-quarantine.patch
+  patch -Np1 -i ../disable-fonts-googleapis-references.patch
+  patch -Np1 -i ../disable-formatting-in-omnibox.patch
+  patch -Np1 -i ../disable-gaia.patch
+  patch -Np1 -i ../disable-gcm.patch
+  patch -Np1 -i ../disable-google-host-detection.patch
+  patch -Np1 -i ../disable-intranet-redirect-detector.patch
+  patch -Np1 -i ../disable-mei-preload.patch
+  patch -Np1 -i ../disable-network-time-tracker.patch
+  patch -Np1 -i ../disable-profile-avatar-downloading.patch
+  #patch -Np1 -i ../disable-signin.patch
+  patch -Np1 -i ../disable-translate.patch
+  patch -Np1 -i ../disable-untraceable-urls.patch
+  patch -Np1 -i ../disable-webgl-renderer-info.patch
+  patch -Np1 -i ../disable-webrtc-log-uploader.patch
+  patch -Np1 -i ../disable-webstore-urls.patch
+  #patch -Np1 -i ../enable-page-saving-on-more-pages.patch
+  #patch -Np1 -i ../fix-building-without-mdns-and-service-discovery.patch
+  #patch -Np1 -i ../fix-building-without-one-click-signin.patch
+  #patch -Np1 -i ../fix-building-without-safebrowsing.patch
+  #patch -Np1 -i ../fix-learn-doubleclick-hsts.patch
+  #patch -Np1 -i ../no-such-option-no-sysroot.patch
+  #patch -Np1 -i ../popups-to-tabs.patch
+  patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+  patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+  patch -Np1 -i ../remove-third-party-analytics.patch
+  #patch -Np1 -i ../replace-google-search-engine-with-nosearch.patch
+  #patch -Np1 -i ../searx.patch
+
+  patch -Np1 -i ../use-local-devtools-files.patch
+  patch -Np1 -i ../fix-libva1-compatibility.patch
+  patch -Np1 -i ../fix-nullptr-t-namespace.patch
+
+  #patch -Np1 -i ../swiftshader.patch
+  #patch -Np1 -i ../third-party-cookies.patch
+  patch -Np1 -i ../unrar.patch
+
+  #patch -Np1 -i ../installer.patch
+  #patch -Np1 -i ../openh264.patch
+
+  patch -Np1 -i ../default-allocator.patch
+  patch -Np1 -i ../define__libc_malloc.patch
+
+##########
+
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
   # added benefit of not having to list all the remaining libraries
@@ -233,6 +309,7 @@ build() {
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'link_pulseaudio=false'
+    'use_allocator="none"'
     'use_pulseaudio=false'
     'use_cups=false'
     'gtk_version=2'
@@ -261,7 +338,6 @@ build() {
     'enable_widevine=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
-    'use_allocator="none"'
     'fatal_linker_warnings=false'
     'target_os="linux"'
     'current_os="linux"'
