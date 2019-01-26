@@ -287,7 +287,7 @@ prepare() {
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
-  
+
 ##########
 
 patch -Np1 < ../alignof.patch
