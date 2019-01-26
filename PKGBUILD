@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=101
+pkgrel=103
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -19,7 +19,7 @@ license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'libva' 'at-spi2-atk' 'at-spi2-core')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld' 'minizip' 'fakeroot' 'automake' 'autoconf' 'bison' 'flex' 'm4')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'minizip' 'fakeroot' 'bison' 'flex')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -29,7 +29,7 @@ optdepends=('pepper-flash: support for Flash content'
             'libva-vdpau-driver-chromium: support HW acceleration on Nvidia graphics cards')
 install=chromium.install
 source=(https://commondatastorage.googleapis.com/chromium-browser-official/chromium-$pkgver.tar.xz
-        chromium-harfbuzz-r0.patch
+       chromium-harfbuzz-r0.patch
         chromium-system-icu.patch
         chromium-widevine.patch
         chromium-skia-harmony.patch
@@ -126,8 +126,8 @@ declare -gA _system_libs=(
   [icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  [libxml]=libxml2
-  [libxslt]=libxslt
+  #[libxml]=libxml2
+  #[libxslt]=libxslt
   #[re2]=re2
   #[snappy]=snappy
   [yasm]=
@@ -186,15 +186,11 @@ prepare() {
   msg2 'Applying VA-API patches'
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
-  #patch -Np1 -i ../gtk2.patch
-
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
-
-###############
 
   patch -Np1 -i ../fuzzers.patch
   patch -Np1 -i ../google-api-warning.patch
@@ -268,8 +264,6 @@ prepare() {
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
 
-##########
-
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
   # added benefit of not having to list all the remaining libraries
@@ -292,8 +286,8 @@ build() {
 
   export CCACHE_SLOPPINESS=time_macros
 
-  export CC="ccache clang"
-  export CXX="ccache clang++"
+  export CC='/bin/ccache /bin/clang'
+  export CXX='/bin/ccache /bin/clang++'
   export AR=ar
   export NM=nm
 
@@ -307,7 +301,6 @@ build() {
     'ffmpeg_branding="Chrome"'
     'proprietary_codecs=true'
     'link_pulseaudio=false'
-    'use_allocator="none"'
     'use_pulseaudio=false'
     'use_cups=false'
     'gtk_version=2'
@@ -336,6 +329,7 @@ build() {
     'enable_widevine=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
+    'use_allocator="none"'
     'fatal_linker_warnings=false'
     'target_os="linux"'
     'current_os="linux"'
@@ -353,6 +347,7 @@ build() {
   )
   # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
   # 'is_clang=true' 'clang_use_chrome_plugins=false'
+  # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
   #
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
@@ -368,11 +363,11 @@ build() {
 
   ./build/linux/unbundle/replace_gn_files.py --system-libraries "${!_system_libs[@]}"
 
-  ./third_party/libaddressinput/chromium/tools/update-strings.py
+  #./third_party/libaddressinput/chromium/tools/update-strings.py
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
-  
-  noti ninja -j7 -v -C out/Release chrome chrome_sandbox chromedriver
+
+  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
 
   # ionice -c3 nice -n20 
 }
