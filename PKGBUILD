@@ -115,7 +115,31 @@ searx.patch
 use-local-devtools-files.patch
 fix-libva1-compatibility.patch
 fix-nullptr-t-namespace.patch
-widevine-other-locations.patch)
+widevine-other-locations.patch
+alignof.patch
+ambiguous-overloads.patch
+as-needed.patch
+autocompletematch.patch
+chromedriver-revision.patch
+constexpr.patch
+constructor.patch
+crc32.patch
+empty-array.patch
+namespace.patch
+optimize.patch
+polymer.patch
+ps-print.patch
+widevine.patch
+widevine-revision.patch
+icu.patch
+fontconfig.patch
+atk.patch
+convertutf.patch
+event.patch
+bootstrap.patch
+libcxx.patch
+sysroot.patch
+)
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
 # Keys are the names in the above script; values are the dependencies in Arch
@@ -126,8 +150,8 @@ declare -gA _system_libs=(
   [icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  #[libxml]=libxml2
-  #[libxslt]=libxslt
+  [libxml]=libxml2
+  [libxslt]=libxslt
   #[re2]=re2
   #[snappy]=snappy
   [yasm]=
@@ -226,7 +250,7 @@ prepare() {
   patch -Np1 -i ../disable-formatting-in-omnibox.patch
   patch -Np1 -i ../disable-gaia.patch
   patch -Np1 -i ../disable-gcm.patch
-  patch -Np1 -i ../disable-google-host-detection.patch
+  #patch -Np1 -i ../disable-google-host-detection.patch
   patch -Np1 -i ../disable-intranet-redirect-detector.patch
   patch -Np1 -i ../disable-mei-preload.patch
   patch -Np1 -i ../disable-network-time-tracker.patch
@@ -263,6 +287,34 @@ prepare() {
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
+  
+##########
+
+patch -Np1 < ../alignof.patch
+patch -Np1 < ../ambiguous-overloads.patch
+patch -Np1 < ../as-needed.patch
+patch -Np1 < ../autocompletematch.patch
+patch -Np1 < ../chromedriver-revision.patch
+patch -Np1 < ../constexpr.patch
+patch -Np1 < ../constructor.patch
+patch -Np1 < ../namespace.patch
+#patch -Np1 < ../optimize.patch
+#patch -Np1 < ../ownership-error.patch
+#patch -Np1 < ../polymer.patch
+#patch -Np1 < ../ps-print.patch
+#patch -Np1 < ../sizet.patch
+#patch -Np1 < ../icu.patch
+patch -Np1 < ../fontconfig.patch
+#patch -Np1 < ../atk.patch
+patch -Np1 < ../convertutf.patch
+#patch -Np1 < ../event.patch
+#patch -Np1 < ../fuzzers.patch
+#patch -Np1 < ../parallel.patch
+#patch -Np1 < ../bootstrap.patch
+#patch -Np1 < ../libcxx.patch
+patch -Np1 < ../sysroot.patch
+
+###########
 
   # Remove bundled libraries for which we will use the system copies; this
   # *should* do what the remove_bundled_libraries.py script does, with the
