@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=105
+pkgrel=106
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -19,7 +19,7 @@ license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'libva' 'at-spi2-atk')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'minizip' 'fakeroot' 'bison' 'flex' 'nodejs')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld ''minizip' 'fakeroot' 'bison' 'flex' 'nodejs' 'ccache')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -228,91 +228,61 @@ prepare() {
   patch -Np1 -i ../signin.patch
   patch -Np1 -i ../sizet.patch
 
-  #patch -Np1 -i ../flag-for-search-engine-collection.patch
-  #patch -Np1 -i ../flag-to-configure-extension-downloading.patch
-  #patch -Np1 -i ../flag-to-disable-beforeunload.patch
-  #patch -Np1 -i ../flag-to-enable-potentially-annoying-security-features.patch
-  #patch -Np1 -i ../flag-to-force-punycode-hostnames.patch
-  #patch -Np1 -i ../flag-to-hide-crashed-bubble.patch
-  #patch -Np1 -i ../flag-to-show-avatar-button.patch
-  #patch -Np1 -i ../flag-to-stack-tabs.patch
-
-  #patch -Np1 -i ../ipv6-probing-option.patch
-  #patch -Np1 -i ../suggestions-url-field.patch
-  #patch -Np1 -i ../third-party-ungoogled.patch
-  #patch -Np1 -i ../block-trk-and-subdomains.patch
-  #patch -Np1 -i ../clear-http-auth-cache-menu-item.patch
-  #patch -Np1 -i ../default-to-https-scheme.patch
-  patch -Np1 -i ../disable-crash-reporter.patch
-  patch -Np1 -i ../disable-domain-reliability.patch
-  patch -Np1 -i ../disable-download-quarantine.patch
-  patch -Np1 -i ../disable-fonts-googleapis-references.patch
-  patch -Np1 -i ../disable-formatting-in-omnibox.patch
-  patch -Np1 -i ../disable-gaia.patch
-  patch -Np1 -i ../disable-gcm.patch
-  #patch -Np1 -i ../disable-google-host-detection.patch
-  patch -Np1 -i ../disable-intranet-redirect-detector.patch
-  patch -Np1 -i ../disable-mei-preload.patch
-  patch -Np1 -i ../disable-network-time-tracker.patch
-  patch -Np1 -i ../disable-profile-avatar-downloading.patch
-  #patch -Np1 -i ../disable-signin.patch
-  patch -Np1 -i ../disable-translate.patch
-  patch -Np1 -i ../disable-untraceable-urls.patch
-  patch -Np1 -i ../disable-webgl-renderer-info.patch
-  patch -Np1 -i ../disable-webrtc-log-uploader.patch
-  patch -Np1 -i ../disable-webstore-urls.patch
-  #patch -Np1 -i ../enable-page-saving-on-more-pages.patch
-  #patch -Np1 -i ../fix-building-without-mdns-and-service-discovery.patch
-  #patch -Np1 -i ../fix-building-without-one-click-signin.patch
-  #patch -Np1 -i ../fix-building-without-safebrowsing.patch
-  #patch -Np1 -i ../fix-learn-doubleclick-hsts.patch
-  #patch -Np1 -i ../no-such-option-no-sysroot.patch
-  #patch -Np1 -i ../popups-to-tabs.patch
-  patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
-  patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
-  patch -Np1 -i ../remove-third-party-analytics.patch
-  #patch -Np1 -i ../replace-google-search-engine-with-nosearch.patch
-  #patch -Np1 -i ../searx.patch
-
-  patch -Np1 -i ../use-local-devtools-files.patch
-  patch -Np1 -i ../fix-libva1-compatibility.patch
-  patch -Np1 -i ../fix-nullptr-t-namespace.patch
-
-  #patch -Np1 -i ../swiftshader.patch
-  #patch -Np1 -i ../third-party-cookies.patch
-  patch -Np1 -i ../unrar.patch
-
-  #patch -Np1 -i ../installer.patch
-  #patch -Np1 -i ../openh264.patch
+  #patch -Np1 -i ../disable-crash-reporter.patch
+  #patch -Np1 -i ../disable-domain-reliability.patch
+  #patch -Np1 -i ../disable-download-quarantine.patch
+  #patch -Np1 -i ../disable-fonts-googleapis-references.patch
+  #patch -Np1 -i ../disable-formatting-in-omnibox.patch
+  #patch -Np1 -i ../disable-gaia.patch
+  #patch -Np1 -i ../disable-gcm.patch
+  #patch -Np1 -i ../disable-intranet-redirect-detector.patch
+  #patch -Np1 -i ../disable-mei-preload.patch
+  #patch -Np1 -i ../disable-network-time-tracker.patch
+  #patch -Np1 -i ../disable-profile-avatar-downloading.patch
+  #patch -Np1 -i ../disable-translate.patch
+  #patch -Np1 -i ../disable-untraceable-urls.patch
+  #patch -Np1 -i ../disable-webgl-renderer-info.patch
+  #patch -Np1 -i ../disable-webrtc-log-uploader.patch
+  #patch -Np1 -i ../disable-webstore-urls.patch
+  #patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+  #patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+  #patch -Np1 -i ../remove-third-party-analytics.patch
+  #patch -Np1 -i ../use-local-devtools-files.patch
+  #patch -Np1 -i ../fix-libva1-compatibility.patch
+  #patch -Np1 -i ../fix-nullptr-t-namespace.patch
+  #patch -Np1 -i ../unrar.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
 
 ##########
 
-patch -Np1 < ../alignof.patch
-patch -Np1 < ../ambiguous-overloads.patch
-patch -Np1 < ../as-needed.patch
-patch -Np1 < ../autocompletematch.patch
-patch -Np1 < ../chromedriver-revision.patch
-patch -Np1 < ../constexpr.patch
-patch -Np1 < ../constructor.patch
-patch -Np1 < ../namespace.patch
+#patch -Np1 < ../alignof.patch
+#patch -Np1 < ../ambiguous-overloads.patch
+#patch -Np1 < ../as-needed.patch
+#patch -Np1 < ../autocompletematch.patch
+#patch -Np1 < ../chromedriver-revision.patch
+#patch -Np1 < ../constexpr.patch
+#patch -Np1 < ../constructor.patch
+#patch -Np1 < ../namespace.patch
+#patch -Np1 < ../fontconfig.patch
+#patch -Np1 < ../convertutf.patch
+#patch -Np1 < ../sysroot.patch
+
+##########
+
 #patch -Np1 < ../optimize.patch
 #patch -Np1 < ../ownership-error.patch
 #patch -Np1 < ../polymer.patch
 #patch -Np1 < ../ps-print.patch
 #patch -Np1 < ../sizet.patch
 #patch -Np1 < ../icu.patch
-patch -Np1 < ../fontconfig.patch
 #patch -Np1 < ../atk.patch
-patch -Np1 < ../convertutf.patch
 #patch -Np1 < ../event.patch
 #patch -Np1 < ../fuzzers.patch
 #patch -Np1 < ../parallel.patch
 #patch -Np1 < ../bootstrap.patch
 #patch -Np1 < ../libcxx.patch
-patch -Np1 < ../sysroot.patch
 
 ###########
 
@@ -338,8 +308,8 @@ build() {
 
   export CCACHE_SLOPPINESS=time_macros
 
-  export CC='/bin/ccache /bin/clang'
-  export CXX='/bin/ccache /bin/clang++'
+  export CC='/bin/ccache clang'
+  export CXX='/bin/ccache clang++'
   export AR=ar
   export NM=nm
 
@@ -397,6 +367,7 @@ build() {
     "google_default_client_secret=\"${_google_default_client_secret}\""
     'use_vaapi=true'
   )
+
   # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
   # 'is_clang=true' 'clang_use_chrome_plugins=false'
   # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
@@ -404,6 +375,7 @@ build() {
    # 'use_lld=false'
    # 'use_thin_lto=false'
    # 'is_clang=true'
+   
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
