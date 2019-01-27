@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=104
+pkgrel=105
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -400,7 +400,10 @@ build() {
   # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
   # 'is_clang=true' 'clang_use_chrome_plugins=false'
   # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
-  #
+  #     'is_cfi=false'
+   # 'use_lld=false'
+   # 'use_thin_lto=false'
+   # 'is_clang=true'
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
