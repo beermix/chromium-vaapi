@@ -155,7 +155,7 @@ declare -gA _system_libs=(
   #[re2]=re2
   #[snappy]=snappy
   [yasm]=
-  [zlib]=minizip
+  #[zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
