@@ -19,7 +19,7 @@ license=('BSD')
 depends=('gtk2' 'nss' 'alsa-lib' 'systemd' 'dbus' 'json-glib' 'xdg-utils' 'libxss' 'libva' 'at-spi2-atk')
 provides=('chromium')
 conflicts=('chromium')
-makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld ''minizip' 'fakeroot' 'bison' 'flex' 'nodejs' 'ccache')
+makedepends=('python' 'python2' 'gperf' 'yasm' 'mesa' 'nodejs' 'git' 'clang' 'lld ''minizip' 'fakeroot' 'bison' 'flex' 'nodejs' 'ccache' 're2' 'snappy')
 optdepends=('pepper-flash: support for Flash content'
             'kdialog: needed for file dialogs in KDE'
             'gnome-keyring: for storing passwords in GNOME keyring'
@@ -152,10 +152,10 @@ declare -gA _system_libs=(
   [libjpeg]=libjpeg
   [libxml]=libxml2
   [libxslt]=libxslt
-  #[re2]=re2
-  #[snappy]=snappy
+  [re2]=re2
+  [snappy]=snappy
   [yasm]=
-  #[zlib]=minizip
+  [zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
