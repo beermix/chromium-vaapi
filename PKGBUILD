@@ -216,17 +216,17 @@ prepare() {
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
-  patch -Np1 -i ../fuzzers.patch
-  patch -Np1 -i ../google-api-warning.patch
+  #patch -Np1 -i ../fuzzers.patch
+  #patch -Np1 -i ../google-api-warning.patch
   patch -Np1 -i ../gpu-timeout.patch
   patch -Np1 -i ../gtk2.patch
-  patch -Np1 -i ../inspector.patch
-  patch -Np1 -i ../mojo.patch
-  patch -Np1 -i ../ownership-error.patch
-  patch -Np1 -i ../parallel.patch
-  patch -Np1 -i ../perfetto.patch
-  patch -Np1 -i ../signin.patch
-  patch -Np1 -i ../sizet.patch
+  #patch -Np1 -i ../inspector.patch
+  #patch -Np1 -i ../mojo.patch
+  #patch -Np1 -i ../ownership-error.patch
+  #patch -Np1 -i ../parallel.patch
+  #patch -Np1 -i ../perfetto.patch
+  #patch -Np1 -i ../signin.patch
+  #patch -Np1 -i ../sizet.patch
 
   #patch -Np1 -i ../disable-crash-reporter.patch
   #patch -Np1 -i ../disable-domain-reliability.patch
