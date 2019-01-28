@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=106
+pkgrel=107
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -150,12 +150,12 @@ declare -gA _system_libs=(
   [icu]=icu
   [libdrm]=
   [libjpeg]=libjpeg
-  [libxml]=libxml2
-  [libxslt]=libxslt
-  [re2]=re2
-  [snappy]=snappy
+  #[libxml]=libxml2
+  #[libxslt]=libxslt
+  #[re2]=re2
+  #[snappy]=snappy
   [yasm]=
-  [zlib]=minizip
+  #[zlib]=minizip
 )
 _unwanted_bundled_libs=(
   ${!_system_libs[@]}
@@ -357,11 +357,6 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
-    'is_cfi=false'
-    'use_lld=false'
-    'use_thin_lto=false'
-    'is_clang=true'
-    'clang_use_chrome_plugins=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
@@ -371,11 +366,12 @@ build() {
   # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
   # 'is_clang=true' 'clang_use_chrome_plugins=false'
   # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
-  #     'is_cfi=false'
-   # 'use_lld=false'
-   # 'use_thin_lto=false'
-   # 'is_clang=true'
-   
+    #'is_cfi=false'
+    #'use_lld=false'
+    #'use_thin_lto=false'
+    #'is_clang=true'
+    #'clang_use_chrome_plugins=false'
+
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
