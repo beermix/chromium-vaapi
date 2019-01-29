@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=108
+pkgrel=109
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -152,7 +152,7 @@ declare -gA _system_libs=(
   [libjpeg]=libjpeg
   [libxml]=libxml2
   [libxslt]=libxslt
-  [re2]=re2
+  #[re2]=re2
   [snappy]=snappy
   [yasm]=
   [zlib]=minizip
