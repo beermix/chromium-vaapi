@@ -230,29 +230,29 @@ prepare() {
   #patch -Np1 -i ../signin.patch
   patch -Np1 -i ../sizet.patch
 
-  #patch -Np1 -i ../disable-crash-reporter.patch
-  #patch -Np1 -i ../disable-domain-reliability.patch
-  #patch -Np1 -i ../disable-download-quarantine.patch
-  #patch -Np1 -i ../disable-fonts-googleapis-references.patch
-  #patch -Np1 -i ../disable-formatting-in-omnibox.patch
-  #patch -Np1 -i ../disable-gaia.patch
-  #patch -Np1 -i ../disable-gcm.patch
-  #patch -Np1 -i ../disable-intranet-redirect-detector.patch
-  #patch -Np1 -i ../disable-mei-preload.patch
-  #patch -Np1 -i ../disable-network-time-tracker.patch
-  #patch -Np1 -i ../disable-profile-avatar-downloading.patch
-  #patch -Np1 -i ../disable-translate.patch
-  #patch -Np1 -i ../disable-untraceable-urls.patch
-  #patch -Np1 -i ../disable-webgl-renderer-info.patch
-  #patch -Np1 -i ../disable-webrtc-log-uploader.patch
-  #patch -Np1 -i ../disable-webstore-urls.patch
-  #patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
-  #patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
-  #patch -Np1 -i ../remove-third-party-analytics.patch
-  #patch -Np1 -i ../use-local-devtools-files.patch
-  #patch -Np1 -i ../fix-libva1-compatibility.patch
-  #patch -Np1 -i ../fix-nullptr-t-namespace.patch
-  #patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../disable-crash-reporter.patch
+  patch -Np1 -i ../disable-domain-reliability.patch
+  patch -Np1 -i ../disable-download-quarantine.patch
+  patch -Np1 -i ../disable-fonts-googleapis-references.patch
+  patch -Np1 -i ../disable-formatting-in-omnibox.patch
+  patch -Np1 -i ../disable-gaia.patch
+  patch -Np1 -i ../disable-gcm.patch
+  patch -Np1 -i ../disable-intranet-redirect-detector.patch
+  patch -Np1 -i ../disable-mei-preload.patch
+  patch -Np1 -i ../disable-network-time-tracker.patch
+  patch -Np1 -i ../disable-profile-avatar-downloading.patch
+  patch -Np1 -i ../disable-translate.patch
+  patch -Np1 -i ../disable-untraceable-urls.patch
+  patch -Np1 -i ../disable-webgl-renderer-info.patch
+  patch -Np1 -i ../disable-webrtc-log-uploader.patch
+  patch -Np1 -i ../disable-webstore-urls.patch
+  patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+  patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+  patch -Np1 -i ../remove-third-party-analytics.patch
+  patch -Np1 -i ../use-local-devtools-files.patch
+  patch -Np1 -i ../fix-libva1-compatibility.patch
+  patch -Np1 -i ../fix-nullptr-t-namespace.patch
+  patch -Np1 -i ../unrar.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
@@ -387,7 +387,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  noti ninja -j8 -C out/Release chrome chrome_sandbox chromedriver
+  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
 
   # ionice -c3 nice -n20 
 }
