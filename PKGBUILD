@@ -222,11 +222,11 @@ prepare() {
   patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../inspector.patch
   patch -Np1 -i ../mojo.patch
-  patch -Np1 -i ../ownership-error.patch
-  patch -Np1 -i ../parallel.patch
-  patch -Np1 -i ../perfetto.patch
-  patch -Np1 -i ../signin.patch
-  patch -Np1 -i ../sizet.patch
+  #patch -Np1 -i ../ownership-error.patch
+  #patch -Np1 -i ../parallel.patch
+  #patch -Np1 -i ../perfetto.patch
+  #patch -Np1 -i ../signin.patch
+  #patch -Np1 -i ../sizet.patch
 
   #patch -Np1 -i ../disable-crash-reporter.patch
   #patch -Np1 -i ../disable-domain-reliability.patch
@@ -357,6 +357,10 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
+    'is_cfi=false'
+    'use_lld=false'
+    'use_thin_lto=false'
+    'is_clang=true'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
@@ -366,10 +370,7 @@ build() {
   # 'use_jumbo_build=true' 'jumbo_file_merge_limit=40' 'is_cfi=false' 'use_lld=false' 'use_thin_lto=false'
   # 'is_clang=true' 'clang_use_chrome_plugins=false'
   # 'use_system_harfbuzz=false' 'use_system_libjpeg=false'
-    #'is_cfi=false'
-    #'use_lld=false'
-    #'use_thin_lto=false'
-    #'is_clang=true'
+
     #'clang_use_chrome_plugins=false'
 
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
