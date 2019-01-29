@@ -52,6 +52,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         autocompletematch.patch
         bootstrap.patch
         empty-array.patch
+        fix-nav-preload-with-third-party-cookie-blocking.patch
 fuzzers.patch
 google-api-warning.patch
 gpu-timeout.patch
