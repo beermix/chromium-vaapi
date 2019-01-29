@@ -259,21 +259,21 @@ prepare() {
 
 ##########
 
-#patch -Np1 < ../alignof.patch
-#patch -Np1 < ../ambiguous-overloads.patch
-#patch -Np1 < ../as-needed.patch
-#patch -Np1 < ../autocompletematch.patch
-#patch -Np1 < ../chromedriver-revision.patch
-#patch -Np1 < ../constexpr.patch
-#patch -Np1 < ../constructor.patch
-#patch -Np1 < ../namespace.patch
-#patch -Np1 < ../fontconfig.patch
-#patch -Np1 < ../convertutf.patch
+patch -Np1 < ../alignof.patch
+patch -Np1 < ../ambiguous-overloads.patch
+patch -Np1 < ../as-needed.patch
+patch -Np1 < ../autocompletematch.patch
+patch -Np1 < ../chromedriver-revision.patch
+patch -Np1 < ../constexpr.patch
+patch -Np1 < ../constructor.patch
+patch -Np1 < ../namespace.patch
+patch -Np1 < ../fontconfig.patch
+patch -Np1 < ../convertutf.patch
 #patch -Np1 < ../sysroot.patch
 
 ##########
 
-#patch -Np1 < ../optimize.patch
+patch -Np1 < ../optimize.patch
 #patch -Np1 < ../ownership-error.patch
 #patch -Np1 < ../polymer.patch
 #patch -Np1 < ../ps-print.patch
