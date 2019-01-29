@@ -357,10 +357,6 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
-    'is_cfi=false'
-    'use_lld=false'
-    'use_thin_lto=false'
-    'is_clang=true'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
