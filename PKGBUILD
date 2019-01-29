@@ -222,9 +222,10 @@ prepare() {
   patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../inspector.patch
   patch -Np1 -i ../mojo.patch
-  #patch -Np1 -i ../ownership-error.patch
-  #patch -Np1 -i ../parallel.patch
-  #patch -Np1 -i ../perfetto.patch
+  
+  patch -Np1 -i ../ownership-error.patch
+  patch -Np1 -i ../parallel.patch
+  patch -Np1 -i ../perfetto.patch
   #patch -Np1 -i ../signin.patch
   #patch -Np1 -i ../sizet.patch
 
