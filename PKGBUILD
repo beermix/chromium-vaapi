@@ -385,11 +385,9 @@ build() {
 
   ./build/linux/unbundle/replace_gn_files.py --system-libraries "${!_system_libs[@]}"
 
-  #./third_party/libaddressinput/chromium/tools/update-strings.py
-
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  noti ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
+  noti ninja -j8 -C out/Release chrome chrome_sandbox chromedriver
 
   # ionice -c3 nice -n20 
 }
