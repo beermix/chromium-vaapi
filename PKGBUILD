@@ -273,7 +273,7 @@ patch -Np1 < ../convertutf.patch
 
 ##########
 
-patch -Np1 < ../optimize.patch
+#patch -Np1 < ../optimize.patch
 #patch -Np1 < ../ownership-error.patch
 #patch -Np1 < ../polymer.patch
 #patch -Np1 < ../ps-print.patch
