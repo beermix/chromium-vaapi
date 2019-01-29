@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=110
+pkgrel=111
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -183,6 +183,9 @@ prepare() {
     third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
     third_party/libxml/chromium/libxml_utils.cc
 
+  # https://crbug.com/913220
+  patch -Np1 -i ../fix-nav-preload-with-third-party-cookie-blocking.patch
+
   # Load Widevine CDM if available
   patch -Np1 -i ../chromium-widevine.patch
 
@@ -208,6 +211,7 @@ prepare() {
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
   msg2 'Applying VA-API patches'
+  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../chromium-vaapi-r21.patch
 
   msg2 'Applying OE patches'
@@ -336,11 +340,6 @@ build() {
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'use_dbus=true'
-    'use_system_zlib=true'
-    'use_gio=true'
-    'use_alsa=true'
-    'use_aura=true'
-    'use_glib=true'
     'rtc_enable_protobuf=false'
     'use_libpci=false'
     'enable_remoting=false'
@@ -354,7 +353,6 @@ build() {
     'enable_nacl=false'
     'enable_swiftshader=false'
     'use_allocator="none"'
-    'fatal_linker_warnings=false'
     'target_os="linux"'
     'current_os="linux"'
     'optimize_webui=false'
@@ -373,7 +371,12 @@ build() {
     #'use_thin_lto=false'
     #'is_clang=true'
     #'clang_use_chrome_plugins=false'
-
+    #'fatal_linker_warnings=false'
+    #'use_system_zlib=true'
+    #'use_gio=true'
+    #'use_alsa=true'
+    #'use_aura=true'
+    #'use_glib=true'
   # Facilitate deterministic builds (taken from build/config/compiler/BUILD.gn)
   CFLAGS+='   -Wno-builtin-macro-redefined'
   CXXFLAGS+=' -Wno-builtin-macro-redefined'
