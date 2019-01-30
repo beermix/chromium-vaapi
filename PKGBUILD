@@ -217,7 +217,6 @@ prepare() {
   patch -Np1 -i ../touch-v35
   patch -Np1 -i ../notifications-nicer
   patch -Np1 -i ../nacl-loosen-fd-check.patch
-  patch -Np1 -i ../gn-fix-for-i386-build.patch
   patch -Np1 -i ../use-clang-versioned.patch
   patch -Np1 -i ../gn-nacl-use-gcc-toolchain.patch
   patch -Np1 -i ../remove-linux-kernel-dependency.patch
