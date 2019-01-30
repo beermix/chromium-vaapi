@@ -8,6 +8,7 @@
 # Contributor: Pierre Schmitz <pierre@archlinux.de>
 # Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
+# https://packages.debian.org/ru/chromium
 
 pkgname=chromium-vaapi
 pkgver=72.0.3626.81
@@ -155,6 +156,41 @@ specify-gcc-standard.patch
 revert-Xclang-instcombine-lower-dbg-declare.patch
 suppress-newer-clang-warning-flags.patch
 fix-ffmpeg-build.patch
+crashpad.patch
+gcc_skcms_ice.patch
+skia-aarch64-buildfix.patch
+atomic.patch
+lambda-this.patch
+nullptr-copy-construct.patch
+use-after-move.patch
+nspr.patch
+vpx.patch
+widevine-buildflag.patch
+android.patch
+welcome-page.patch
+connection-message.patch
+include.patch
+widevine-locations.patch
+ffmpeg34.patch
+jpeg.patch
+openjpeg.patch
+zlib.patch
+enum-compare.patch
+sequence-point.patch
+manpage.patch
+master-preferences.patch
+sandbox.patch
+device-notifications.patch
+jsoncpp.patch
+lcms2.patch
+attribute.patch
+explicit-constructor.patch
+initialization.patch
+int-in-bool-context.patch
+multichar.patch
+null-destination.patch
+printf.patch
+unused-typedefs.patch
 )
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -203,7 +239,7 @@ prepare() {
   #patch -Np1 -i ../fix-nav-preload-with-third-party-cookie-blocking.patch
 
   # Load Widevine CDM if available
-  patch -Np1 -i ../chromium-widevine.patch
+  #patch -Np1 -i ../chromium-widevine.patch
 
   # https://crbug.com/skia/6663#c10
   #patch -Np4 -i ../chromium-skia-harmony.patch
@@ -246,42 +282,81 @@ prepare() {
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
-  #patch -Np1 -i ../fuzzers.patch
-  patch -Np1 -i ../google-api-warning.patch
+  #patch -Np1 -i ../gn/libcxx.patch
+  #patch -Np1 -i ../gn/parallel.patch
+
+  ## patch -Np1 -i ../sizet.patch
+  #patch -Np1 -i ../atomic.patch
+  patch -Np1 -i ../constexpr.patch
+  patch -Np1 -i ../constructor.patch
+  patch -Np1 -i ../lambda-this.patch
+  patch -Np1 -i ../use-after-move.patch
+  patch -Np1 -i ../nullptr-copy-construct.patch
+
+  patch -Np1 -i ../mojo.patch
+  patch -Np1 -i ../include.patch
+  patch -Np1 -i ../alignof.patch
+  patch -Np1 -i ../polymer.patch
+  patch -Np1 -i ../ps-print.patch
+  patch -Np1 -i ../as-needed.patch
+  patch -Np1 -i ../inspector.patch
+  patch -Np1 -i ../namespace.patch
   patch -Np1 -i ../gpu-timeout.patch
-  #patch -Np1 -i ../gtk2.patch
-  #patch -Np1 -i ../inspector.patch
-  #patch -Np1 -i ../mojo.patch
+  patch -Np1 -i ../empty-array.patch
+  patch -Np1 -i ../widevine-revision.patch
+  patch -Np1 -i ../widevine-locations.patch
+  patch -Np1 -i ../widevine-buildflag.patch
+  patch -Np1 -i ../connection-message.patch
+  patch -Np1 -i ../chromedriver-revision.patch
 
-  patch -Np1 -i ../ownership-error.patch
-  #patch -Np1 -i ../parallel.patch
-  #patch -Np1 -i ../perfetto.patch
+  patch -Np1 -i ../unrar.patch
+  patch -Np1 -i ../signin.patch
+  patch -Np1 -i ../android.patch
+  patch -Np1 -i ../fuzzers.patch
+  patch -Np1 -i ../openh264.patch
+  patch -Np1 -i ../perfetto.patch
+  patch -Np1 -i ../installer.patch
+  patch -Np1 -i ../swiftshader.patch
+  patch -Np1 -i ../welcome-page.patch
+  patch -Np1 -i ../google-api-warning.patch
+  patch -Np1 -i ../third-party-cookies.patch
+  patch -Np1 -i ../device-notifications.patch
 
-  #patch -Np1 -i ../signin.patch
+  patch -Np1 -i ../printf.patch
+  patch -Np1 -i ../attribute.patch
+  patch -Np1 -i ../multichar.patch
+  patch -Np1 -i ../enum-compare.patch
+  patch -Np1 -i ../sequence-point.patch
+  patch -Np1 -i ../initialization.patch
+  patch -Np1 -i ../unused-typedefs.patch
+  patch -Np1 -i ../null-destination.patch
+  patch -Np1 -i ../int-in-bool-context.patch
+  #patch -Np1 -i ../explicit-constructor.patch
+
+  patch -Np1 -i ../vpx.patch
+  patch -Np1 -i ../icu.patch
+  patch -Np1 -i ../gtk2.patch
+  patch -Np1 -i ../jpeg.patch
+  patch -Np1 -i ../nspr.patch
+  patch -Np1 -i ../zlib.patch
+  patch -Np1 -i ../event.patch
+  patch -Np1 -i ../jsoncpp.patch
+  patch -Np1 -i ../ffmpeg34.patch
+  #patch -Np1 -i ../openjpeg.patch
+  patch -Np1 -i ../convertutf.patch
+  patch -Np1 -i ../fontconfig.patch
 
   patch -Np1 -i ../disable-crash-reporter.patch
-  #patch -Np1 -i ../disable-domain-reliability.patch
   patch -Np1 -i ../disable-download-quarantine.patch
   patch -Np1 -i ../disable-fonts-googleapis-references.patch
-  #patch -Np1 -i ../disable-formatting-in-omnibox.patch
   patch -Np1 -i ../disable-gaia.patch
   patch -Np1 -i ../disable-gcm.patch
   patch -Np1 -i ../disable-intranet-redirect-detector.patch
   patch -Np1 -i ../disable-mei-preload.patch
   patch -Np1 -i ../disable-network-time-tracker.patch
-  #patch -Np1 -i ../disable-profile-avatar-downloading.patch
-  #patch -Np1 -i ../disable-translate.patch
   patch -Np1 -i ../disable-untraceable-urls.patch
   patch -Np1 -i ../disable-webgl-renderer-info.patch
   patch -Np1 -i ../disable-webrtc-log-uploader.patch
-  #patch -Np1 -i ../disable-webstore-urls.patch
-  #patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
-  #patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
-  #patch -Np1 -i ../remove-third-party-analytics.patch
-  #patch -Np1 -i ../use-local-devtools-files.patch
-  #patch -Np1 -i ../fix-libva1-compatibility.patch
-  #patch -Np1 -i ../fix-nullptr-t-namespace.patch
-  #patch -Np1 -i ../unrar.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
@@ -376,6 +451,12 @@ build() {
     'enable_nacl=false'
     'enable_swiftshader=false'
     'use_allocator="none"'
+    'use_unofficial_version_number=false'
+    'remove_webcore_debug_symbols=true'
+    'optimize_webui=false'
+    'enable_nacl_nonsfi=false'
+    'enable_reading_list=false'
+    'enable_iterator_debugging=false'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
