@@ -143,6 +143,18 @@ libcxx.patch
 sysroot.patch
 fix-build.patch
 fix-build-on-older-gcc.patch
+touch-v35
+notifications-nicer
+nacl-loosen-fd-check.patch
+gn-fix-for-i386-build.patch
+use-clang-versioned.patch
+gn-nacl-use-gcc-toolchain.patch
+remove-linux-kernel-dependency.patch
+stdatomic
+specify-gcc-standard.patch
+revert-Xclang-instcombine-lower-dbg-declare.patch
+suppress-newer-clang-warning-flags.patch
+fix-ffmpeg-build.patch
 )
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -202,6 +214,18 @@ prepare() {
   # https://bugs.gentoo.org/661880#c21
   patch -Np1 -i ../fix-build.patch
   patch -Np1 -i ../fix-build-on-older-gcc.patch
+  patch -Np1 -i ../touch-v35
+  patch -Np1 -i ../notifications-nicer
+  patch -Np1 -i ../nacl-loosen-fd-check.patch
+  patch -Np1 -i ../gn-fix-for-i386-build.patch
+  patch -Np1 -i ../use-clang-versioned.patch
+  patch -Np1 -i ../gn-nacl-use-gcc-toolchain.patch
+  patch -Np1 -i ../remove-linux-kernel-dependency.patch
+  patch -Np1 -i ../stdatomic
+  patch -Np1 -i ../specify-gcc-standard.patch
+  patch -Np1 -i ../revert-Xclang-instcombine-lower-dbg-declare.patch
+  patch -Np1 -i ../suppress-newer-clang-warning-flags.patch
+  patch -Np1 -i ../fix-ffmpeg-build.patch
 
   # Remove compiler flags not supported by our system clang
   sed -i \
