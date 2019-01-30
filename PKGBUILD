@@ -279,8 +279,6 @@ prepare() {
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0002-allow-root.patch
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
-  #patch -Np1 -i ../notifications-nicer.patch
-  #patch -Np1 -i ../title-bar-default-system.patch
 
   #patch -Np1 -i ../gn/libcxx.patch
   #patch -Np1 -i ../gn/parallel.patch
@@ -358,8 +356,8 @@ prepare() {
   patch -Np1 -i ../disable-webgl-renderer-info.patch
   patch -Np1 -i ../disable-webrtc-log-uploader.patch
 
-  patch -Np1 -i ../default-allocator.patch
-  patch -Np1 -i ../define__libc_malloc.patch
+  #patch -Np1 -i ../default-allocator.patch
+  #patch -Np1 -i ../define__libc_malloc.patch
 
 ##########
 
@@ -436,6 +434,7 @@ build() {
     'use_kerberos=false'
     'is_debug=false'
     'enable_vr=false'
+    'gtk_version=2'
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'use_dbus=true'
