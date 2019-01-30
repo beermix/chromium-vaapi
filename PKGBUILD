@@ -10,8 +10,8 @@
 # Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=chromium-vaapi
-pkgver=71.0.3578.127
-pkgrel=112
+pkgver=72.0.3626.81
+pkgrel=200
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -53,6 +53,7 @@ source=(https://commondatastorage.googleapis.com/chromium-browser-official/chrom
         bootstrap.patch
         empty-array.patch
         fix-nav-preload-with-third-party-cookie-blocking.patch
+        enable_vaapi_on_linux_2.diff
 fuzzers.patch
 google-api-warning.patch
 gpu-timeout.patch
@@ -213,7 +214,7 @@ prepare() {
 
   msg2 'Applying VA-API patches'
   # patch -Np1 -i ../cfi-vaapi-fix.patch
-  patch -Np1 -i ../chromium-vaapi-r21.patch
+  patch -Np1 -i ../enable_vaapi_on_linux_2.diff
 
   msg2 'Applying OE patches'
   patch -Np1 -i ../chromium-0002-allow-root.patch
@@ -358,11 +359,6 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
-    'is_cfi=false'
-    'use_lld=false'
-    'use_thin_lto=false'
-    'is_clang=true'
-    'clang_use_chrome_plugins=false'
     'fatal_linker_warnings=false'
     'use_system_zlib=true'
     'use_gio=true'
