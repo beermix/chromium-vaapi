@@ -141,8 +141,6 @@ event.patch
 bootstrap.patch
 libcxx.patch
 sysroot.patch
-fix-build.patch
-fix-build-on-older-gcc.patch
 )
 
 # Possible replacements are listed in build/linux/unbundle/replace_gn_files.py
@@ -200,8 +198,8 @@ prepare() {
   #patch -Np1 -i ../chromium-harfbuzz-r0.patch
 
   # https://bugs.gentoo.org/661880#c21
-  patch -Np1 -i ../fix-build.patch
-  patch -Np1 -i ../fix-build-on-older-gcc.patch
+  #patch -Np1 -i ../chromium-system-icu.patch
+
 
   # Remove compiler flags not supported by our system clang
   sed -i \
@@ -215,6 +213,7 @@ prepare() {
   ln -s /usr/bin/node third_party/node/linux/node-linux-x64/bin/
 
   msg2 'Applying VA-API patches'
+  # patch -Np1 -i ../cfi-vaapi-fix.patch
   patch -Np1 -i ../enable_vaapi_on_linux_2.diff
 
   msg2 'Applying OE patches'
@@ -222,6 +221,44 @@ prepare() {
   patch -Np1 -i ../chromium-0003_oe-root-filesystem-is-readonly.patch
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
+
+  #patch -Np1 -i ../fuzzers.patch
+  patch -Np1 -i ../google-api-warning.patch
+  patch -Np1 -i ../gpu-timeout.patch
+  #patch -Np1 -i ../gtk2.patch
+  #patch -Np1 -i ../inspector.patch
+  #patch -Np1 -i ../mojo.patch
+
+  patch -Np1 -i ../ownership-error.patch
+  patch -Np1 -i ../parallel.patch
+  #patch -Np1 -i ../perfetto.patch
+
+  #patch -Np1 -i ../signin.patch
+  patch -Np1 -i ../sizet.patch
+
+  patch -Np1 -i ../disable-crash-reporter.patch
+  #patch -Np1 -i ../disable-domain-reliability.patch
+  patch -Np1 -i ../disable-download-quarantine.patch
+  patch -Np1 -i ../disable-fonts-googleapis-references.patch
+  #patch -Np1 -i ../disable-formatting-in-omnibox.patch
+  patch -Np1 -i ../disable-gaia.patch
+  patch -Np1 -i ../disable-gcm.patch
+  patch -Np1 -i ../disable-intranet-redirect-detector.patch
+  patch -Np1 -i ../disable-mei-preload.patch
+  patch -Np1 -i ../disable-network-time-tracker.patch
+  #patch -Np1 -i ../disable-profile-avatar-downloading.patch
+  #patch -Np1 -i ../disable-translate.patch
+  patch -Np1 -i ../disable-untraceable-urls.patch
+  patch -Np1 -i ../disable-webgl-renderer-info.patch
+  patch -Np1 -i ../disable-webrtc-log-uploader.patch
+  #patch -Np1 -i ../disable-webstore-urls.patch
+  #patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+  #patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+  #patch -Np1 -i ../remove-third-party-analytics.patch
+  #patch -Np1 -i ../use-local-devtools-files.patch
+  #patch -Np1 -i ../fix-libva1-compatibility.patch
+  #patch -Np1 -i ../fix-nullptr-t-namespace.patch
+  #patch -Np1 -i ../unrar.patch
 
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
@@ -252,7 +289,7 @@ prepare() {
 #patch -Np1 < ../atk.patch
 #patch -Np1 < ../event.patch
 #patch -Np1 < ../fuzzers.patch
-patch -Np1 < ../parallel.patch
+#patch -Np1 < ../parallel.patch
 #patch -Np1 < ../bootstrap.patch
 #patch -Np1 < ../libcxx.patch
 
@@ -297,6 +334,7 @@ build() {
     'link_pulseaudio=false'
     'use_pulseaudio=false'
     'use_cups=false'
+    'remove_webcore_debug_symbols=true'
     'use_gold=false'
     'use_kerberos=false'
     'is_debug=false'
@@ -304,6 +342,7 @@ build() {
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'use_dbus=true'
+    'rtc_enable_protobuf=false'
     'use_libpci=false'
     'enable_remoting=false'
     'enable_wayland_server=false'
@@ -311,11 +350,21 @@ build() {
     'use_sysroot=false'
     'linux_use_bundled_binutils=false'
     'use_custom_libcxx=false'
-    'enable_hangout_services_extension=false'
+    'enable_hangout_services_extension=true'
     'enable_widevine=true'
     'enable_nacl=false'
     'enable_swiftshader=false'
     'use_allocator="none"'
+    'target_os="linux"'
+    'current_os="linux"'
+    'optimize_webui=false'
+    'enable_mdns=true'
+    'fatal_linker_warnings=false'
+    'use_system_zlib=true'
+    'use_gio=true'
+    'use_alsa=true'
+    'use_aura=true'
+    'use_glib=true'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
