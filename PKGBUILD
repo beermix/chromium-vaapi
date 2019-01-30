@@ -405,7 +405,7 @@ build() {
 
   gn gen out/Release --args="${_flags[*]}" --script-executable=/usr/bin/python2
 
-  noti ionice -c3 nice -n20 ninja -j5 -C out/Release chrome chrome_sandbox chromedriver
+  noti ionice -c3 nice -n20 ninja -j7 -C out/Release chrome chrome_sandbox chromedriver
 
   # ionice -c3 nice -n20 
 }
