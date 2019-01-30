@@ -246,6 +246,43 @@ prepare() {
   #patch -Np1 -i ../notifications-nicer.patch
   #patch -Np1 -i ../title-bar-default-system.patch
 
+  #patch -Np1 -i ../fuzzers.patch
+  patch -Np1 -i ../google-api-warning.patch
+  patch -Np1 -i ../gpu-timeout.patch
+  #patch -Np1 -i ../gtk2.patch
+  #patch -Np1 -i ../inspector.patch
+  #patch -Np1 -i ../mojo.patch
+
+  patch -Np1 -i ../ownership-error.patch
+  #patch -Np1 -i ../parallel.patch
+  #patch -Np1 -i ../perfetto.patch
+
+  #patch -Np1 -i ../signin.patch
+
+  patch -Np1 -i ../disable-crash-reporter.patch
+  #patch -Np1 -i ../disable-domain-reliability.patch
+  patch -Np1 -i ../disable-download-quarantine.patch
+  patch -Np1 -i ../disable-fonts-googleapis-references.patch
+  #patch -Np1 -i ../disable-formatting-in-omnibox.patch
+  patch -Np1 -i ../disable-gaia.patch
+  patch -Np1 -i ../disable-gcm.patch
+  patch -Np1 -i ../disable-intranet-redirect-detector.patch
+  patch -Np1 -i ../disable-mei-preload.patch
+  patch -Np1 -i ../disable-network-time-tracker.patch
+  #patch -Np1 -i ../disable-profile-avatar-downloading.patch
+  #patch -Np1 -i ../disable-translate.patch
+  patch -Np1 -i ../disable-untraceable-urls.patch
+  patch -Np1 -i ../disable-webgl-renderer-info.patch
+  patch -Np1 -i ../disable-webrtc-log-uploader.patch
+  #patch -Np1 -i ../disable-webstore-urls.patch
+  #patch -Np1 -i ../remove-disable-setuid-sandbox-as-bad-flag.patch
+  #patch -Np1 -i ../remove-fcomplete-member-pointers-cflag.patch
+  #patch -Np1 -i ../remove-third-party-analytics.patch
+  #patch -Np1 -i ../use-local-devtools-files.patch
+  #patch -Np1 -i ../fix-libva1-compatibility.patch
+  #patch -Np1 -i ../fix-nullptr-t-namespace.patch
+  #patch -Np1 -i ../unrar.patch
+
   patch -Np1 -i ../default-allocator.patch
   patch -Np1 -i ../define__libc_malloc.patch
 
