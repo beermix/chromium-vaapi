@@ -333,7 +333,7 @@ prepare() {
 
   #patch -Np1 -i ../vpx.patch
   #patch -Np1 -i ../icu.patch
-  patch -Np1 -i ../gtk2.patch
+  #patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../jpeg.patch
   #patch -Np1 -i ../nspr.patch
   #patch -Np1 -i ../zlib.patch
@@ -433,7 +433,6 @@ build() {
     'use_kerberos=false'
     'is_debug=false'
     'enable_vr=false'
-    'gtk_version=2'
     'enable_vulkan=false'
     'is_desktop_linux=true'
     'use_dbus=true'
