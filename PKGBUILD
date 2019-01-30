@@ -385,7 +385,6 @@ prepare() {
 #patch -Np1 < ../atk.patch
 #patch -Np1 < ../event.patch
 #patch -Np1 < ../fuzzers.patch
-patch -Np1 < ../parallel.patch
 #patch -Np1 < ../bootstrap.patch
 #patch -Np1 < ../libcxx.patch
 
