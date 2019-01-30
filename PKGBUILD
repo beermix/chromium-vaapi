@@ -11,7 +11,7 @@
 
 pkgname=chromium-vaapi
 pkgver=71.0.3578.127
-pkgrel=111
+pkgrel=112
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
@@ -358,6 +358,17 @@ build() {
     'current_os="linux"'
     'optimize_webui=false'
     'enable_mdns=true'
+    'is_cfi=false'
+    'use_lld=false'
+    'use_thin_lto=false'
+    'is_clang=true'
+    'clang_use_chrome_plugins=false'
+    'fatal_linker_warnings=false'
+    'use_system_zlib=true'
+    'use_gio=true'
+    'use_alsa=true'
+    'use_aura=true'
+    'use_glib=true'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
