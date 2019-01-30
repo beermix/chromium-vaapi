@@ -339,7 +339,7 @@ prepare() {
   patch -Np1 -i ../zlib.patch
   #patch -Np1 -i ../event.patch
   #patch -Np1 -i ../jsoncpp.patch
-  patch -Np1 -i ../ffmpeg34.patch
+  #patch -Np1 -i ../ffmpeg34.patch
   #patch -Np1 -i ../openjpeg.patch
   patch -Np1 -i ../convertutf.patch
   patch -Np1 -i ../fontconfig.patch
