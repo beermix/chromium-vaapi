@@ -331,7 +331,7 @@ prepare() {
   patch -Np1 -i ../int-in-bool-context.patch
   #patch -Np1 -i ../explicit-constructor.patch
 
-  patch -Np1 -i ../vpx.patch
+  #patch -Np1 -i ../vpx.patch
   patch -Np1 -i ../icu.patch
   patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../jpeg.patch
