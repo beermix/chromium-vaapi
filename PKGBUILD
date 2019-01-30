@@ -332,17 +332,17 @@ prepare() {
   #patch -Np1 -i ../explicit-constructor.patch
 
   #patch -Np1 -i ../vpx.patch
-  patch -Np1 -i ../icu.patch
+  #patch -Np1 -i ../icu.patch
   patch -Np1 -i ../gtk2.patch
   patch -Np1 -i ../jpeg.patch
-  patch -Np1 -i ../nspr.patch
-  patch -Np1 -i ../zlib.patch
+  #patch -Np1 -i ../nspr.patch
+  #patch -Np1 -i ../zlib.patch
   #patch -Np1 -i ../event.patch
   #patch -Np1 -i ../jsoncpp.patch
   #patch -Np1 -i ../ffmpeg34.patch
   #patch -Np1 -i ../openjpeg.patch
-  patch -Np1 -i ../convertutf.patch
-  patch -Np1 -i ../fontconfig.patch
+  #patch -Np1 -i ../convertutf.patch
+  #patch -Np1 -i ../fontconfig.patch
 
   patch -Np1 -i ../disable-crash-reporter.patch
   patch -Np1 -i ../disable-download-quarantine.patch
