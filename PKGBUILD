@@ -308,11 +308,11 @@ prepare() {
   patch -Np1 -i ../chromedriver-revision.patch
 
   patch -Np1 -i ../unrar.patch
-  patch -Np1 -i ../signin.patch
+  #patch -Np1 -i ../signin.patch
   patch -Np1 -i ../android.patch
   patch -Np1 -i ../fuzzers.patch
   patch -Np1 -i ../openh264.patch
-  patch -Np1 -i ../perfetto.patch
+  #patch -Np1 -i ../perfetto.patch
   patch -Np1 -i ../installer.patch
   patch -Np1 -i ../swiftshader.patch
   patch -Np1 -i ../welcome-page.patch
