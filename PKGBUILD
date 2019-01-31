@@ -283,22 +283,22 @@ prepare() {
   #patch -Np1 -i ../gn/libcxx.patch
   #patch -Np1 -i ../gn/parallel.patch
 
-  ## patch -Np1 -i ../sizet.patch
-  #patch -Np1 -i ../atomic.patch
-  #patch -Np1 -i ../constexpr.patch
-  #patch -Np1 -i ../constructor.patch
-  #patch -Np1 -i ../lambda-this.patch
-  #patch -Np1 -i ../use-after-move.patch
-  #patch -Np1 -i ../nullptr-copy-construct.patch
+  patch -Np1 -i ../sizet.patch
+  patch -Np1 -i ../atomic.patch
+  patch -Np1 -i ../constexpr.patch
+  patch -Np1 -i ../constructor.patch
+  patch -Np1 -i ../lambda-this.patch
+  patch -Np1 -i ../use-after-move.patch
+  patch -Np1 -i ../nullptr-copy-construct.patch
 
-  #patch -Np1 -i ../mojo.patch
-  #patch -Np1 -i ../include.patch
-  #patch -Np1 -i ../alignof.patch
-  #patch -Np1 -i ../polymer.patch
-  #patch -Np1 -i ../ps-print.patch
+  patch -Np1 -i ../mojo.patch
+  patch -Np1 -i ../include.patch
+  patch -Np1 -i ../alignof.patch
+  patch -Np1 -i ../polymer.patch
+  patch -Np1 -i ../ps-print.patch
   #patch -Np1 -i ../as-needed.patch
-  #patch -Np1 -i ../inspector.patch
-  #patch -Np1 -i ../namespace.patch
+  patch -Np1 -i ../inspector.patch
+  patch -Np1 -i ../namespace.patch
   patch -Np1 -i ../gpu-timeout.patch
   patch -Np1 -i ../empty-array.patch
   patch -Np1 -i ../widevine-revision.patch
@@ -457,6 +457,17 @@ build() {
     'enable_nacl_nonsfi=false'
     'enable_reading_list=false'
     'enable_iterator_debugging=false'
+    'is_cfi=false'
+    'use_lld=false'
+    'use_thin_lto=false'
+    'is_clang=true'
+    'clang_use_chrome_plugins=false'
+    'fatal_linker_warnings=false'
+    'use_system_zlib=true'
+    'use_gio=true'
+    'use_alsa=true'
+    'use_aura=true'
+    'use_glib=true'
     "google_api_key=\"${_google_api_key}\""
     "google_default_client_id=\"${_google_default_client_id}\""
     "google_default_client_secret=\"${_google_default_client_secret}\""
