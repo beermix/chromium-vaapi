@@ -12,7 +12,7 @@
 
 pkgname=chromium-vaapi
 pkgver=72.0.3626.81
-pkgrel=200
+pkgrel=201
 pkgdesc="Chromium with VA-API support to enable hardware acceleration"
 arch=('x86_64')
 url="https://www.chromium.org/Home"
