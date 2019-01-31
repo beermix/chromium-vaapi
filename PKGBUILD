@@ -285,20 +285,20 @@ prepare() {
 
   ## patch -Np1 -i ../sizet.patch
   #patch -Np1 -i ../atomic.patch
-  patch -Np1 -i ../constexpr.patch
-  patch -Np1 -i ../constructor.patch
-  patch -Np1 -i ../lambda-this.patch
-  patch -Np1 -i ../use-after-move.patch
-  patch -Np1 -i ../nullptr-copy-construct.patch
+  #patch -Np1 -i ../constexpr.patch
+  #patch -Np1 -i ../constructor.patch
+  #patch -Np1 -i ../lambda-this.patch
+  #patch -Np1 -i ../use-after-move.patch
+  #patch -Np1 -i ../nullptr-copy-construct.patch
 
-  patch -Np1 -i ../mojo.patch
-  patch -Np1 -i ../include.patch
-  patch -Np1 -i ../alignof.patch
-  patch -Np1 -i ../polymer.patch
-  patch -Np1 -i ../ps-print.patch
-  patch -Np1 -i ../as-needed.patch
-  patch -Np1 -i ../inspector.patch
-  patch -Np1 -i ../namespace.patch
+  #patch -Np1 -i ../mojo.patch
+  #patch -Np1 -i ../include.patch
+  #patch -Np1 -i ../alignof.patch
+  #patch -Np1 -i ../polymer.patch
+  #patch -Np1 -i ../ps-print.patch
+  #patch -Np1 -i ../as-needed.patch
+  #patch -Np1 -i ../inspector.patch
+  #patch -Np1 -i ../namespace.patch
   patch -Np1 -i ../gpu-timeout.patch
   patch -Np1 -i ../empty-array.patch
   patch -Np1 -i ../widevine-revision.patch
@@ -320,15 +320,15 @@ prepare() {
   patch -Np1 -i ../third-party-cookies.patch
   patch -Np1 -i ../device-notifications.patch
 
-  patch -Np1 -i ../printf.patch
-  patch -Np1 -i ../attribute.patch
-  patch -Np1 -i ../multichar.patch
-  patch -Np1 -i ../enum-compare.patch
-  patch -Np1 -i ../sequence-point.patch
-  patch -Np1 -i ../initialization.patch
+  #patch -Np1 -i ../printf.patch
+  #patch -Np1 -i ../attribute.patch
+  #patch -Np1 -i ../multichar.patch
+  #patch -Np1 -i ../enum-compare.patch
+  #patch -Np1 -i ../sequence-point.patch
+  #patch -Np1 -i ../initialization.patch
   patch -Np1 -i ../unused-typedefs.patch
-  patch -Np1 -i ../null-destination.patch
-  patch -Np1 -i ../int-in-bool-context.patch
+  #patch -Np1 -i ../null-destination.patch
+  #patch -Np1 -i ../int-in-bool-context.patch
   #patch -Np1 -i ../explicit-constructor.patch
 
   #patch -Np1 -i ../vpx.patch
