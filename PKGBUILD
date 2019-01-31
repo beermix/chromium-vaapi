@@ -283,8 +283,10 @@ prepare() {
   #patch -Np1 -i ../gn/libcxx.patch
   #patch -Np1 -i ../gn/parallel.patch
 
-  patch -Np1 -i ../sizet.patch
-  patch -Np1 -i ../atomic.patch
+  # dublicates
+  #patch -Np1 -i ../sizet.patch
+  #patch -Np1 -i ../atomic.patch
+  
   patch -Np1 -i ../constexpr.patch
   patch -Np1 -i ../constructor.patch
   patch -Np1 -i ../lambda-this.patch
