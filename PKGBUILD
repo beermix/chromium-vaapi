@@ -311,7 +311,7 @@ prepare() {
   #patch -Np1 -i ../signin.patch
   patch -Np1 -i ../android.patch
   patch -Np1 -i ../fuzzers.patch
-  patch -Np1 -i ../openh264.patch
+  #patch -Np1 -i ../openh264.patch
   #patch -Np1 -i ../perfetto.patch
   patch -Np1 -i ../installer.patch
   patch -Np1 -i ../swiftshader.patch
